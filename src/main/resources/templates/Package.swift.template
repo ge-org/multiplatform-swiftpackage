@@ -1,0 +1,25 @@
+// swift-tools-version:$toolsVersion
+import PackageDescription
+
+let package = Package(
+    name: "$name",
+    platforms: [
+        $platforms
+    ],
+    products: [
+        .library(
+            name: "$name",
+            targets: ["$name"]
+        ),
+    ],
+    targets: [
+<% if (isLocal) print """        .binaryTarget(
+            name: "$name",
+            path: "./${name}.xcframework"
+        ),""" else print """        .binaryTarget(
+            name: "$name",
+            url: "$url",
+            checksum: "$checksum"
+        ),""" %>
+    ]
+)

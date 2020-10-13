@@ -1,7 +1,7 @@
 package com.chromaticnoise.multiplatformswiftpackage.domain
 
 import com.chromaticnoise.multiplatformswiftpackage.MultiplatformSwiftPackagePlugin
-import com.chromaticnoise.multiplatformswiftpackage.task.zipFileDistributionURL
+import com.chromaticnoise.multiplatformswiftpackage.task.zipFileName
 import org.gradle.api.Project
 
 internal data class SwiftPackageConfiguration(
@@ -14,7 +14,7 @@ internal data class SwiftPackageConfiguration(
 
     private val distributionUrl = when (distributionMode) {
         DistributionMode.Local -> null
-        is DistributionMode.Remote -> zipFileDistributionURL(distributionMode.url, project)
+        is DistributionMode.Remote -> distributionMode.url.appendPath(zipFileName(project))
     }
 
     internal val templateProperties = mapOf(
@@ -22,7 +22,7 @@ internal data class SwiftPackageConfiguration(
         "name" to project.name,
         "platforms" to platforms,
         "isLocal" to (distributionMode == DistributionMode.Local),
-        "url" to distributionUrl,
+        "url" to distributionUrl?.value,
         "checksum" to zipChecksum.trim()
     )
 

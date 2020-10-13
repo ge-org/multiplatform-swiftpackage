@@ -4,7 +4,6 @@ import com.chromaticnoise.multiplatformswiftpackage.domain.OutputDirectory
 import org.gradle.api.Project
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.net.URL
 
 internal fun zipFileChecksum(project: Project, outputDirectory: OutputDirectory): String {
     val outputPath = outputDirectory.value
@@ -24,8 +23,3 @@ internal fun zipFileChecksum(project: Project, outputDirectory: OutputDirectory)
 }
 
 internal fun zipFileName(project: Project) = "${project.name}-${project.version}.zip"
-
-internal fun zipFileDistributionURL(url: URL, project: Project) = when (url.toExternalForm().endsWith("/")) {
-    true -> "${url.toExternalForm()}${zipFileName(project)}"
-    false -> "${url.toExternalForm()}/${zipFileName(project)}"
-}

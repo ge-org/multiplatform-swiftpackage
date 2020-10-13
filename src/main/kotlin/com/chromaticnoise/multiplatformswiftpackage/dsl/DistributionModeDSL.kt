@@ -1,7 +1,7 @@
 package com.chromaticnoise.multiplatformswiftpackage.dsl
 
 import com.chromaticnoise.multiplatformswiftpackage.domain.DistributionMode
-import java.net.URL
+import com.chromaticnoise.multiplatformswiftpackage.domain.DistributionURL
 
 /**
  * DSL to create instance of a [DistributionModeDSL].
@@ -22,6 +22,6 @@ public class DistributionModeDSL {
      * @param url where the ZIP file can be downloaded from. E.g. https://example.com/packages/
      */
     public fun remote(url: String) {
-        distributionMode = DistributionMode.Remote(URL(url))
+        distributionMode = DistributionMode.Remote(DistributionURL(url))
     }
 }

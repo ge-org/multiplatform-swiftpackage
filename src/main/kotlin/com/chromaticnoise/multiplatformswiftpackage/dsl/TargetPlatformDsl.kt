@@ -13,6 +13,42 @@ public class TargetPlatformDsl {
     internal var targetPlatforms = mutableListOf<TargetPlatform>()
 
     /**
+     * Adds all iOS targets as a [TargetPlatform] using the provided [version].
+     *
+     * @param version builder for an instance of [PlatformVersion]
+     */
+    public fun iOS(version: Action<PlatformVersionDsl>) {
+        targets("iosArm64", "iosX64", version = version)
+    }
+
+    /**
+     * Adds all watchOS targets as a [TargetPlatform] using the provided [version].
+     *
+     * @param version builder for an instance of [PlatformVersion]
+     */
+    public fun watchOS(version: Action<PlatformVersionDsl>) {
+        targets("watchosArm32", "watchosArm64", "watchosX86", version = version)
+    }
+
+    /**
+     * Adds all tvOS targets as a [TargetPlatform] using the provided [version].
+     *
+     * @param version builder for an instance of [PlatformVersion]
+     */
+    public fun tvOS(version: Action<PlatformVersionDsl>) {
+        targets("tvosArm64", "tvosX64", version = version)
+    }
+
+    /**
+     * Adds all macOS targets as a [TargetPlatform] using the provided [version].
+     *
+     * @param version builder for an instance of [PlatformVersion]
+     */
+    public fun macOS(version: Action<PlatformVersionDsl>) {
+        targets("macosX64", version = version)
+    }
+
+    /**
      * Adds a [TargetPlatform] with targets for the given [names] and the provided [version].
      * The [names] corresponds to the Kotlin multiplatform target names.
      *

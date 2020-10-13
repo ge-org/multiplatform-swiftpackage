@@ -40,7 +40,7 @@ This is a complete example of the required configuration. All available options 
 multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {
-        targets("iosArm64", "iosX64") { v("13") }
+      iOS { v("13") }
     }
 }
 ```
@@ -102,17 +102,25 @@ The main feature of an XCFramework is packaging multiple architectures for the s
 This is great since it allows distributing e.g. iOS builds for both the physical device, and the simulator in one package.
 
 Swift packages require declaring the minimum supported version for each platform.
-Therefore, you need to configure both the architectures for each platform and the version. 
+Therefore, you need to configure both the architectures for each platform and the version.
+
+You can either declare all target architectures specifically or add all architectures of a platform at once.
 
 ```kotlin
 targetPlatforms {
-  // iOS device and simulator with minimum version 13
-  targets("iosArm64", "iosX64") { v("13") }
+  // all iOS targets (== device and simulator) with minimum version 13
+  iOS { v("13") }
 
   // macOS with minimum version 10.0
   targets("macosX64") { v("10.0") }
 }
 ```
+
+Available platform shortcuts are:
+- `iOS { v("xxx") }`
+- `tvOS { v("xxx") }`
+- `macOS { v("xxx") }`
+- `watchOS { v("xxx") }`
 
 ## Further Reading
 To learn more about the Swift Package Manager I recommend reading the following resources.

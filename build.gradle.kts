@@ -42,10 +42,11 @@ publishing {
                 name.set("Multiplatform Swift Package")
                 description.set("Gradle plugin to generate a Swift.package file and XCFramework to distribute a Kotlin Multiplatform iOS library")
                 url.set("https://github.com/ge-org/multiplatform-swiftpackage")
+
                 licenses {
                     license {
-                        name.set("GNU General Public License, Version 3")
-                        url.set("https://www.gnu.org/licenses/gpl-3.0.txt")
+                        name.set("Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
                 developers {
@@ -54,9 +55,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://github.com/ge-org/multiplatform-swiftpackage.git")
-                    developerConnection.set("scm:git:ssh://github.com:ge-org/multiplatform-swiftpackage.git")
-                    url.set("http://github.com/ge-org/multiplatform-swiftpackage/tree/master")
+                    connection.set("scm:git:https://github.com/ge-org/multiplatform-swiftpackage.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/ge-org/multiplatform-swiftpackage.git")
+                    url.set("https://github.com/ge-org/multiplatform-swiftpackage")
                 }
             }
         }

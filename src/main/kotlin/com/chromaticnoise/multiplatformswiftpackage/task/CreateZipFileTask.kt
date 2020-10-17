@@ -1,6 +1,6 @@
 package com.chromaticnoise.multiplatformswiftpackage.task
 
-import com.chromaticnoise.multiplatformswiftpackage.domain.extension
+import com.chromaticnoise.multiplatformswiftpackage.domain.getConfigurationOrThrow
 import org.gradle.api.Project
 import org.gradle.api.tasks.bundling.Zip
 
@@ -11,7 +11,8 @@ internal fun Project.registerCreateZipFileTask() {
 
         dependsOn("createXCFramework")
 
-        val outputDirectory = project.extension.outputDirectory.value
+        val configuration = getConfigurationOrThrow()
+        val outputDirectory = configuration.outputDirectory.value
         archiveFileName.set(zipFileName(project))
         destinationDirectory.set(outputDirectory)
         from(outputDirectory) {

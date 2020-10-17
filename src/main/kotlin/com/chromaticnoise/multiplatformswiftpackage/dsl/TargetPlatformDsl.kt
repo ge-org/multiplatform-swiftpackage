@@ -56,11 +56,16 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun targets(vararg names: String, version: Action<PlatformVersionDsl>) {
+        if (names.isEmpty()) return
+        if (names.any { it.isBlank() }) return
+
         version.build(PlatformVersionDsl()) { dsl ->
-            targetPlatforms.add(TargetPlatform(
-                version = dsl.version,
-                targets = names.map { TargetName(it) }
-            ))
+            dsl.version?.let { platformVersion ->
+                targetPlatforms.add(TargetPlatform(
+                    version = platformVersion,
+                    targets = names.mapNotNull { TargetName.of(it) }
+                ))
+            }
         }
     }
 
@@ -68,7 +73,7 @@ public class TargetPlatformDsl {
      * DSL to create instances of [PlatformVersion].
      */
     public class PlatformVersionDsl {
-        internal lateinit var version: PlatformVersion
+        internal var version: PlatformVersion? = null
 
         /**
          * Creates a [PlatformVersion] for the given [versionName].
@@ -79,7 +84,9 @@ public class TargetPlatformDsl {
          * @see "https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html#supportedplatform"
          */
         public fun v(versionName: String) {
-            this.version = PlatformVersion(versionName)
+            PlatformVersion.of(versionName)?.let {
+                this.version = it
+            }
         }
     }
 }

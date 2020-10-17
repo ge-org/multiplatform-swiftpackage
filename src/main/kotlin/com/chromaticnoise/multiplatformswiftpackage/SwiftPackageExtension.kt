@@ -10,14 +10,12 @@ import java.io.File
 
 public open class SwiftPackageExtension(project: Project) {
 
-    internal var container = ExtensionConfiguration(
-        buildConfiguration = BuildConfiguration.Release,
-        outputDirectory = OutputDirectory(File(project.projectDir, "swiftpackage")),
-        swiftToolsVersion = SwiftToolVersion.Unknown,
-        distributionMode = DistributionMode.Local,
-        targetPlatforms = emptyList(),
-        appleTargets = emptyList()
-    )
+    internal var buildConfiguration: BuildConfiguration = BuildConfiguration.Release
+    internal var outputDirectory: OutputDirectory = OutputDirectory(File(project.projectDir, "swiftpackage"))
+    internal var swiftToolsVersion: SwiftToolVersion? = null
+    internal var distributionMode: DistributionMode = DistributionMode.Local
+    internal var targetPlatforms: Collection<TargetPlatform> = emptyList()
+    internal var appleTargets: Collection<AppleTarget> = emptyList()
 
     /**
      * Sets the directory where files like the Package.swift and XCFramework will be created.
@@ -26,7 +24,7 @@ public open class SwiftPackageExtension(project: Project) {
      * @param directory where the files will be created.
      */
     public fun outputDirectory(directory: File) {
-        container = container.copy(outputDirectory = OutputDirectory((directory)))
+        outputDirectory = OutputDirectory((directory))
     }
 
     /**
@@ -34,7 +32,7 @@ public open class SwiftPackageExtension(project: Project) {
      * E.g. 5.3
      */
     public fun swiftToolsVersion(name: String) {
-        container = container.copy(swiftToolsVersion = SwiftToolVersion.Named(name))
+        swiftToolsVersion = SwiftToolVersion.of(name)
     }
 
     /**
@@ -42,7 +40,7 @@ public open class SwiftPackageExtension(project: Project) {
      */
     public fun buildConfiguration(builder: Action<BuildConfigurationDSL>) {
         builder.build(BuildConfigurationDSL()) { dsl ->
-            container = container.copy(buildConfiguration = dsl.buildConfiguration)
+            buildConfiguration = dsl.buildConfiguration
         }
     }
 
@@ -51,7 +49,7 @@ public open class SwiftPackageExtension(project: Project) {
      */
     public fun distributionMode(builder: Action<DistributionModeDSL>) {
         builder.build(DistributionModeDSL()) { dsl ->
-            container = container.copy(distributionMode = dsl.distributionMode)
+            distributionMode = dsl.distributionMode
         }
     }
 
@@ -60,7 +58,7 @@ public open class SwiftPackageExtension(project: Project) {
      */
     public fun targetPlatforms(builder: Action<TargetPlatformDsl>) {
         builder.build(TargetPlatformDsl()) { dsl ->
-            container = container.copy(targetPlatforms = dsl.targetPlatforms)
+            targetPlatforms = dsl.targetPlatforms
         }
     }
 }

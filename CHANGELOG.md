@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
       macOS { v("10.0") }
     }
     ```
+- Better error messages if the plugin is not configured correctly
+- Better validation of plugin configuration
 
 ## [1.0.0] - 2020-10-12
 The first release :partying_face:

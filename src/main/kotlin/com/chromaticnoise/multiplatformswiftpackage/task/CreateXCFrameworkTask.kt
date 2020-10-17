@@ -1,6 +1,6 @@
 package com.chromaticnoise.multiplatformswiftpackage.task
 
-import com.chromaticnoise.multiplatformswiftpackage.domain.extension
+import com.chromaticnoise.multiplatformswiftpackage.domain.getConfigurationOrThrow
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
 import java.io.File
@@ -9,10 +9,11 @@ internal fun Project.registerCreateXCFrameworkTask() = tasks.register("createXCF
     group = "multiplatform-swift-package"
     description = "Creates an XCFramework for all declared Apple targets"
 
-    val buildConfiguration = extension.buildConfiguration
-    val xcFrameworkDestination = File(extension.outputDirectory.value, "${project.name}.xcframework")
+    val configuration = getConfigurationOrThrow()
+    val buildConfiguration = configuration.buildConfiguration
+    val xcFrameworkDestination = File(configuration.outputDirectory.value, "${project.name}.xcframework")
 
-    val frameworks = extension.appleTargets.mapNotNull { target ->
+    val frameworks = configuration.appleTargets.mapNotNull { target ->
         target.framework(buildConfiguration)
     }
 

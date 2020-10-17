@@ -18,8 +18,9 @@ internal class MultiplatformSwiftPackagePlugin : Plugin<Project> {
         val extension = project.extensions.create(EXTENSION_NAME, SwiftPackageExtension::class.java, project)
         project.afterEvaluate {
             project.extensions.findByType<KotlinMultiplatformExtension>()?.let { kmpExtension ->
-                extension.container = extension.container.copy(
-                    appleTargets = AppleTarget.allOf(kmpExtension.targets.toList(), extension.container.targetPlatforms)
+                extension.appleTargets = AppleTarget.allOf(
+                    nativeTargets = kmpExtension.targets.toList(),
+                    platforms = extension.targetPlatforms
                 )
                 project.registerCreateXCFrameworkTask()
                 project.registerCreateZipFileTask()

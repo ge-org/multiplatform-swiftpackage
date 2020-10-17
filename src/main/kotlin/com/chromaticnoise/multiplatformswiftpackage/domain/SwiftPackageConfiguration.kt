@@ -6,7 +6,7 @@ import org.gradle.api.Project
 
 internal data class SwiftPackageConfiguration(
     private val project: Project,
-    private val toolVersion: SwiftToolVersion.Named,
+    private val toolVersion: SwiftToolVersion,
     private val platforms: String,
     private val distributionMode: DistributionMode,
     private val zipChecksum: String

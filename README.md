@@ -14,7 +14,7 @@ The plugin is published on Maven central. Add it to the `plugins` block in the G
 
 ```kotlin
 plugins {
-  id("com.chromaticnoise.multiplatform-swiftpackage") version "1.0.1"
+  id("com.chromaticnoise.multiplatform-swiftpackage") version "1.0.2"
 }
 ```
 

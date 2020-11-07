@@ -27,8 +27,12 @@ internal fun Project.registerCreateXCFrameworkTask() = tasks.register("createXCF
         frameworks.forEach { framework ->
             add("-framework")
             add(framework.outputFile.path)
-            add("-debug-symbols")
-            add(File(framework.outputFile.parent, "${project.name}.framework.dSYM").path)
+
+            val dsymFile = File(framework.outputFile.parent, "${project.name}.framework.dSYM")
+            if (dsymFile.exists()) {
+                add("-debug-symbols")
+                add(dsymFile.path)
+            }
         }
     })
 

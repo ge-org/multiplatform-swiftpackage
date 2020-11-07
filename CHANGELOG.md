@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix a bug where target names were not always resolved correctly
 [#1](https://github.com/ge-org/multiplatform-swiftpackage/issues/1)
 
+- Fix a bug where the creation of the XCFramework failed if dSYM files did not exist
+
 ## [1.0.1]
 ### Added
 - Add all architectures of a platform at once

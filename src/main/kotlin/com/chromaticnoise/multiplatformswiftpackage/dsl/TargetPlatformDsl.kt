@@ -1,16 +1,15 @@
 package com.chromaticnoise.multiplatformswiftpackage.dsl
 
-import com.chromaticnoise.multiplatformswiftpackage.domain.PlatformVersion
-import com.chromaticnoise.multiplatformswiftpackage.domain.TargetName
-import com.chromaticnoise.multiplatformswiftpackage.domain.TargetPlatform
-import com.chromaticnoise.multiplatformswiftpackage.domain.build
+import com.chromaticnoise.multiplatformswiftpackage.domain.*
+import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError
+import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError.InvalidTargetName
 import org.gradle.api.Action
 
 /**
 * DSL to create instances of [TargetPlatform].
 */
 public class TargetPlatformDsl {
-    internal var targetPlatforms = mutableListOf<TargetPlatform>()
+    internal var targetPlatforms = mutableListOf<Either<List<PluginConfigurationError>, TargetPlatform>>()
 
     /**
      * Adds all iOS targets as a [TargetPlatform] using the provided [version].
@@ -18,7 +17,7 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun iOS(version: Action<PlatformVersionDsl>) {
-        targets("iosArm64", "iosX64", version = version)
+        targets(Either.Right(TargetName.IOSarm64), Either.Right(TargetName.IOSx64), version = version)
     }
 
     /**
@@ -27,7 +26,13 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun watchOS(version: Action<PlatformVersionDsl>) {
-        targets("watchosArm32", "watchosArm64", "watchosX86", version = version)
+        targets(
+            Either.Right(TargetName.WatchOSarm32),
+            Either.Right(TargetName.WatchOSarm64),
+            Either.Right(TargetName.WatchOSx86),
+            Either.Right(TargetName.WatchOSx64),
+            version = version
+        )
     }
 
     /**
@@ -36,7 +41,7 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun tvOS(version: Action<PlatformVersionDsl>) {
-        targets("tvosArm64", "tvosX64", version = version)
+        targets(Either.Right(TargetName.TvOSarm64), Either.Right(TargetName.TvOSx64), version = version)
     }
 
     /**
@@ -45,7 +50,7 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun macOS(version: Action<PlatformVersionDsl>) {
-        targets("macosX64", version = version)
+        targets(Either.Right(TargetName.MacOSx64), version = version)
     }
 
     /**
@@ -56,15 +61,22 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun targets(vararg names: String, version: Action<PlatformVersionDsl>) {
+        val targetNames = names.map { Either.ofNullable(TargetName.of(it), InvalidTargetName(it)) }.toTypedArray()
+        targets(*targetNames, version = version)
+    }
+
+    private fun targets(vararg names: Either<PluginConfigurationError, TargetName>, version: Action<PlatformVersionDsl>) {
         if (names.isEmpty()) return
-        if (names.any { it.isBlank() }) return
 
         version.build(PlatformVersionDsl()) { dsl ->
             dsl.version?.let { platformVersion ->
-                targetPlatforms.add(TargetPlatform(
-                    version = platformVersion,
-                    targets = names.mapNotNull { TargetName.of(it) }
-                ))
+                val errors = names.filterIsInstance<Either.Left<PluginConfigurationError, TargetName>>().map { it.value }
+                val targetNames = names.filterIsInstance<Either.Right<PluginConfigurationError, TargetName>>().map { it.value }
+                val platform: Either<List<PluginConfigurationError>, TargetPlatform> = when {
+                    errors.isNotEmpty() -> Either.Left(errors)
+                    else -> Either.Right(TargetPlatform(version = platformVersion, targets = targetNames))
+                }
+                targetPlatforms.add(platform)
             }
         }
     }

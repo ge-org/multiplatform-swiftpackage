@@ -1,14 +1,18 @@
 package com.chromaticnoise.multiplatformswiftpackage.domain
 
-internal class TargetName private constructor(private val value: String) {
-
-    val name: String get() = value
+internal enum class TargetName(val identifier: String) {
+    IOSarm64("iosArm64"),
+    IOSx64("iosX64"),
+    WatchOSarm32("watchosArm32"),
+    WatchOSarm64("watchosArm64"),
+    WatchOSx86("watchosX86"),
+    WatchOSx64("watchosX64"),
+    TvOSarm64("tvosArm64"),
+    TvOSx64("tvosX64"),
+    MacOSx64("macosX64");
 
     internal companion object {
-        fun of(name: String): TargetName? = name.ifNotBlank { TargetName(name) }
+        private val map = values().associateBy(TargetName::identifier)
+        fun of(id: String): TargetName? = map[id]
     }
-
-    override fun equals(other: Any?): Boolean = value == (other as? TargetName)?.value
-
-    override fun hashCode(): Int = value.hashCode()
 }

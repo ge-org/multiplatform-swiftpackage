@@ -1,6 +1,7 @@
 package com.chromaticnoise.multiplatformswiftpackage
 
 import com.chromaticnoise.multiplatformswiftpackage.domain.*
+import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError
 import com.chromaticnoise.multiplatformswiftpackage.dsl.BuildConfigurationDSL
 import com.chromaticnoise.multiplatformswiftpackage.dsl.DistributionModeDSL
 import com.chromaticnoise.multiplatformswiftpackage.dsl.TargetPlatformDsl
@@ -14,7 +15,7 @@ public open class SwiftPackageExtension(project: Project) {
     internal var outputDirectory: OutputDirectory = OutputDirectory(File(project.projectDir, "swiftpackage"))
     internal var swiftToolsVersion: SwiftToolVersion? = null
     internal var distributionMode: DistributionMode = DistributionMode.Local
-    internal var targetPlatforms: Collection<TargetPlatform> = emptyList()
+    internal var targetPlatforms: Collection<Either<List<PluginConfigurationError>, TargetPlatform>> = emptyList()
     internal var appleTargets: Collection<AppleTarget> = emptyList()
 
     /**

@@ -23,6 +23,15 @@ class PluginConfigurationTest : BehaviorSpec() {
                 }
             }
 
+            When("the target platforms produced errors") {
+                val expectedErrors = listOf(InvalidTargetName("invalid name"), InvalidTargetName("whatever"))
+                extension.targetPlatforms = listOf(Either.Left(expectedErrors))
+
+                Then("the errors should be returned") {
+                    (PluginConfiguration.of(extension) as Either.Left).value.containsAll(expectedErrors)
+                }
+            }
+
             When("the target platforms are empty") {
                 extension.targetPlatforms = emptyList()
 
@@ -32,7 +41,7 @@ class PluginConfigurationTest : BehaviorSpec() {
             }
 
             When("the apple platforms are empty but target platforms are not") {
-                extension.targetPlatforms = listOf(TargetPlatform(PlatformVersion.of("13")!!, listOf(TargetName.of("target")!!)))
+                extension.targetPlatforms = listOf(Either.Right(TargetPlatform(PlatformVersion.of("13")!!, listOf(TargetName.IOSarm64))))
                 extension.appleTargets = emptyList()
 
                 Then("an error should be returned") {

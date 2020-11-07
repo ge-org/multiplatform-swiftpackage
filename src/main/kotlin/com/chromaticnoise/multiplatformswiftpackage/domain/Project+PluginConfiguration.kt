@@ -15,8 +15,8 @@ internal fun Project.getConfigurationOrThrow() = PluginConfiguration.of(
     )
 }, { it })
 
-private fun List<PluginConfigurationError>.toErrorMessage() = joinToString("\n\n") {
-    when (it) {
+private fun List<PluginConfigurationError>.toErrorMessage() = joinToString("\n\n") { error ->
+    when (error) {
         PluginConfigurationError.MissingSwiftToolsVersion -> """
         * Swift tools version is missing.
           Declare it by adding your Swift version to the plugin configuration block.
@@ -28,6 +28,10 @@ private fun List<PluginConfigurationError>.toErrorMessage() = joinToString("\n\n
         PluginConfigurationError.MissingAppleTargets -> """
         * No Apple targets declared.
           It appears your multiplatform project does not contain any Apple target. 
+        """.trimIndent()
+        is PluginConfigurationError.InvalidTargetName -> """
+        * Target name is invalid: ${error.name}
+          Only the following target names are valid: ${TargetName.values().joinToString { it.identifier }}
         """.trimIndent()
     }
 }

@@ -8,4 +8,11 @@ internal sealed class Either<out L, out R> {
         is Left -> l(value)
         is Right -> r(value)
     }
+
+    internal companion object {
+        fun <L, R> ofNullable(right: R?, left: L): Either<L, R> = when (right) {
+            null -> Left(left)
+            else -> Right(right)
+        }
+    }
 }

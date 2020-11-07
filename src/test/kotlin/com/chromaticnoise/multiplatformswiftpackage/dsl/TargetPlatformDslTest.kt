@@ -1,7 +1,8 @@
 package com.chromaticnoise.multiplatformswiftpackage.dsl
 
-import com.chromaticnoise.multiplatformswiftpackage.domain.TargetName
-import com.chromaticnoise.multiplatformswiftpackage.domain.TargetPlatform
+import com.chromaticnoise.multiplatformswiftpackage.domain.*
+import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError
+import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError.InvalidTargetName
 import com.chromaticnoise.multiplatformswiftpackage.dsl.TargetPlatformDsl.PlatformVersionDsl
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -60,15 +61,24 @@ class TargetPlatformDslTest : StringSpec() {
                 .shouldBeEmpty()
         }
 
-        "adding target with empty name should not add a platform target" {
+        "adding target with empty name should add an invalid-name error" {
             TargetPlatformDsl().apply { targets("", version = someVersion()) }.targetPlatforms
-                .shouldBeEmpty()
+                .shouldHaveError(InvalidTargetName(""))
         }
 
-        "adding target with blank name should not add a platform target" {
-            forAll(Arb.string().filter { it.isBlank() }) {
-                TargetPlatformDsl().apply { targets("", version = someVersion()) }.targetPlatforms
-                    .isEmpty()
+        "adding target with blank name should add an invalid-name error" {
+            forAll(Arb.string().filter { it.isBlank() }) { name ->
+                TargetPlatformDsl().apply { targets(name, version = someVersion()) }.targetPlatforms.errors.firstOrNull {
+                    it == InvalidTargetName(name)
+                } != null
+            }
+        }
+
+        "adding target with unknown name should add an invalid-name error" {
+            forAll(Arb.string().filter { TargetName.of(it) == null }) { name ->
+                TargetPlatformDsl().apply { targets(name, version = someVersion()) }.targetPlatforms.errors.firstOrNull {
+                    it == InvalidTargetName(name)
+                } != null
             }
         }
 
@@ -90,7 +100,13 @@ class TargetPlatformDslTest : StringSpec() {
         }
     }
 
-    private fun Collection<TargetPlatform>.shouldHaveTarget(name: String) = firstOrNull {
-        it.targets.contains(TargetName.of(name)!!)
-    }.shouldNotBeNull()
+    private fun Collection<Either<List<PluginConfigurationError>, TargetPlatform>>.shouldHaveTarget(name: String) =
+        platforms.firstOrNull {
+            it.targets.contains(TargetName.of(name)!!)
+        }.shouldNotBeNull()
+
+    private fun Collection<Either<List<PluginConfigurationError>, TargetPlatform>>.shouldHaveError(expectedError: PluginConfigurationError) =
+        errors.firstOrNull {
+            it == expectedError
+        }.shouldNotBeNull()
 }

@@ -10,4 +10,6 @@ internal class PlatformVersion private constructor(private val value: String) {
     override fun equals(other: Any?): Boolean = value == (other as? PlatformVersion)?.value
 
     override fun hashCode(): Int = value.hashCode()
+
+    override fun toString() = "PlatformVersion(name='$name')"
 }

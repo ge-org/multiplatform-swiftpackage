@@ -20,8 +20,8 @@ internal class AppleTarget private constructor(val nativeTarget: KotlinNativeTar
             .filter { it.konanTarget.family.isAppleFamily }
             .filter { target ->
                 platforms
-                    .flatMap { platform -> platform.targets.map { it.name } }
-                    .contains(target.name)
+                    .flatMap { platform -> platform.targets.map { it.konanTarget } }
+                    .firstOrNull { it == target.konanTarget } != null
             }
             .map { AppleTarget(it) }
     }

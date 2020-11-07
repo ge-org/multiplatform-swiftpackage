@@ -13,16 +13,23 @@ internal class PluginConfiguration private constructor(
 ) {
     internal companion object {
         fun of(extension: SwiftPackageExtension): Either<List<PluginConfigurationError>, PluginConfiguration> {
+            val targetPlatforms = extension.targetPlatforms.platforms
+
             val errors = mutableListOf<PluginConfigurationError>().apply {
                 if (extension.swiftToolsVersion == null) {
                     add(MissingSwiftToolsVersion)
                 }
 
-                if (extension.targetPlatforms.isEmpty()) {
+                val targetPlatformErrors = extension.targetPlatforms.errors
+                if (targetPlatformErrors.isNotEmpty()) {
+                    addAll(targetPlatformErrors)
+                }
+
+                if (targetPlatformErrors.isEmpty() && targetPlatforms.isEmpty()) {
                     add(MissingTargetPlatforms)
                 }
 
-                if (extension.appleTargets.isEmpty() && extension.targetPlatforms.isNotEmpty()) {
+                if (extension.appleTargets.isEmpty() && targetPlatforms.isNotEmpty()) {
                     add(MissingAppleTargets)
                 }
             }
@@ -34,7 +41,7 @@ internal class PluginConfiguration private constructor(
                         extension.outputDirectory,
                         extension.swiftToolsVersion!!,
                         extension.distributionMode,
-                        extension.targetPlatforms,
+                        targetPlatforms,
                         extension.appleTargets
                     )
                 )
@@ -44,9 +51,10 @@ internal class PluginConfiguration private constructor(
         }
     }
 
-    internal enum class PluginConfigurationError {
-        MissingSwiftToolsVersion,
-        MissingTargetPlatforms,
-        MissingAppleTargets
+    internal sealed class PluginConfigurationError {
+        object MissingSwiftToolsVersion : PluginConfigurationError()
+        data class InvalidTargetName(val name: String) : PluginConfigurationError()
+        object MissingTargetPlatforms : PluginConfigurationError()
+        object MissingAppleTargets : PluginConfigurationError()
     }
 }

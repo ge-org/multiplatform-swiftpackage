@@ -38,7 +38,7 @@ internal fun Project.registerCreateSwiftPackageTask() {
 
 private fun platforms(configuration: PluginConfiguration): String = configuration.targetPlatforms.flatMap { platform ->
     configuration.appleTargets
-        .filter { appleTarget -> platform.targets.contains(TargetName.of(appleTarget.nativeTarget.name)) }
+        .filter { appleTarget -> platform.targets.firstOrNull { it.konanTarget == appleTarget.nativeTarget.konanTarget } != null }
         .mapNotNull { target -> target.nativeTarget.konanTarget.family.swiftPackagePlatformName }
         .distinct()
         .map { platformName -> ".$platformName(.v${platform.version.name})" }

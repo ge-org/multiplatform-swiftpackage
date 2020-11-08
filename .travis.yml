@@ -1,0 +1,22 @@
+language: java
+install: skip
+
+os: linux
+dist: xenial
+jdk:
+  - openjdk8
+  - oraclejdk8
+
+jobs:
+  include:
+    - stage: test
+      script: ./gradlew check --info --stacktrace --console=plain --max-workers=1 --no-daemon --build-cache --scan -s -Dkotlin.colors.enabled=false
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/

@@ -48,6 +48,14 @@ multiplatformSwiftPackage {
 }
 ```
 
+### Framework Name
+By default, the plugin will create a package with the same name as the project itself.
+You can configure the name of the generated package by providing your own framework name.
+
+```kotlin
+frameworkName(FrameworkName("MySwiftFramework"))
+```
+
 ### Output Directory
 By default, the plugin will write all files into the _swiftpackage_ folder in the project directory.
 You can configure the output folder by providing a File object pointing to it.

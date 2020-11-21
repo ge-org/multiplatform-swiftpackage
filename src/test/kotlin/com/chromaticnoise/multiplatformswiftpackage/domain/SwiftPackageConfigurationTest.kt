@@ -68,6 +68,7 @@ class SwiftPackageConfigurationTest : StringSpec() {
 
     private fun configuration() = SwiftPackageConfiguration(
         project = mockk(relaxed = true),
+        frameworkName = FrameworkName("project name"),
         toolVersion = SwiftToolVersion.of("42")!!,
         platforms = "",
         distributionMode = DistributionMode.Local,

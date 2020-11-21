@@ -11,7 +11,7 @@ internal fun Project.registerCreateXCFrameworkTask() = tasks.register("createXCF
 
     val configuration = getConfigurationOrThrow()
     val buildConfiguration = configuration.buildConfiguration
-    val xcFrameworkDestination = File(configuration.outputDirectory.value, "${project.name}.xcframework")
+    val xcFrameworkDestination = File(configuration.outputDirectory.value, "${configuration.frameworkName}.xcframework")
 
     val frameworks = configuration.appleTargets.mapNotNull { target ->
         target.framework(buildConfiguration)
@@ -28,7 +28,7 @@ internal fun Project.registerCreateXCFrameworkTask() = tasks.register("createXCF
             add("-framework")
             add(framework.outputFile.path)
 
-            val dsymFile = File(framework.outputFile.parent, "${project.name}.framework.dSYM")
+            val dsymFile = File(framework.outputFile.parent, "${configuration.frameworkName}.framework.dSYM")
             if (dsymFile.exists()) {
                 add("-debug-symbols")
                 add(dsymFile.path)

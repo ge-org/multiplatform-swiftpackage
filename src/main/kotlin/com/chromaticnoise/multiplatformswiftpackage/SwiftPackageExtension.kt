@@ -12,11 +12,22 @@ import java.io.File
 public open class SwiftPackageExtension(project: Project) {
 
     internal var buildConfiguration: BuildConfiguration = BuildConfiguration.Release
+    internal var frameworkName: FrameworkName = FrameworkName(project.name)
     internal var outputDirectory: OutputDirectory = OutputDirectory(File(project.projectDir, "swiftpackage"))
     internal var swiftToolsVersion: SwiftToolVersion? = null
     internal var distributionMode: DistributionMode = DistributionMode.Local
     internal var targetPlatforms: Collection<Either<List<PluginConfigurationError>, TargetPlatform>> = emptyList()
     internal var appleTargets: Collection<AppleTarget> = emptyList()
+
+    /**
+     * Sets the name of the framework to be built.
+     * Defaults to ${project.name}
+     *
+     * @param name of the framework to generate.
+     */
+    public fun frameworkName(name: String) {
+        frameworkName = FrameworkName(name)
+    }
 
     /**
      * Sets the directory where files like the Package.swift and XCFramework will be created.

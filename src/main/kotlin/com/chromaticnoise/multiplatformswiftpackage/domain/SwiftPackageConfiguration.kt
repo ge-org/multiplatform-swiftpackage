@@ -6,6 +6,7 @@ import org.gradle.api.Project
 
 internal data class SwiftPackageConfiguration(
     private val project: Project,
+    private val frameworkName: FrameworkName,
     private val toolVersion: SwiftToolVersion,
     private val platforms: String,
     private val distributionMode: DistributionMode,
@@ -19,7 +20,7 @@ internal data class SwiftPackageConfiguration(
 
     internal val templateProperties = mapOf(
         "toolsVersion" to toolVersion.name,
-        "name" to project.name,
+        "name" to frameworkName.value,
         "platforms" to platforms,
         "isLocal" to (distributionMode == DistributionMode.Local),
         "url" to distributionUrl?.value,

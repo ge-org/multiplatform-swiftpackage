@@ -5,6 +5,7 @@ import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.P
 
 internal class PluginConfiguration private constructor(
     val buildConfiguration: BuildConfiguration,
+    val frameworkName: FrameworkName,
     val outputDirectory: OutputDirectory,
     val swiftToolsVersion: SwiftToolVersion,
     val distributionMode: DistributionMode,
@@ -38,6 +39,7 @@ internal class PluginConfiguration private constructor(
                 Either.Right(
                     PluginConfiguration(
                         extension.buildConfiguration,
+                        extension.frameworkName,
                         extension.outputDirectory,
                         extension.swiftToolsVersion!!,
                         extension.distributionMode,

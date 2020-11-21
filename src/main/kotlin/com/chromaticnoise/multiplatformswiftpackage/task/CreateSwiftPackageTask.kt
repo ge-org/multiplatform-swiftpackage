@@ -22,6 +22,7 @@ internal fun Project.registerCreateSwiftPackageTask() {
 
             val packageConfiguration = SwiftPackageConfiguration(
                 project = project,
+                frameworkName = configuration.frameworkName,
                 toolVersion = configuration.swiftToolsVersion,
                 platforms = platforms(configuration),
                 distributionMode = configuration.distributionMode,

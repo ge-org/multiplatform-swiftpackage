@@ -5,7 +5,6 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldEndWith
 import io.kotest.matchers.string.shouldStartWith
-import io.mockk.every
 import io.mockk.mockk
 
 class SwiftPackageConfigurationTest : StringSpec() {
@@ -17,10 +16,10 @@ class SwiftPackageConfigurationTest : StringSpec() {
                 .templateProperties["toolsVersion"].shouldBe("42")
         }
 
-        "name property should match the project name" {
+        "name property should match the configured package name" {
             configuration()
-                .copy(project = mockk(relaxed = true) { every { name } returns "project name" })
-                .templateProperties["name"].shouldBe("project name")
+                .copy(packageName = PackageName.of("expected name").orNull!!)
+                .templateProperties["name"].shouldBe("expected name")
         }
 
         "platforms property should match the given platforms" {
@@ -68,7 +67,7 @@ class SwiftPackageConfigurationTest : StringSpec() {
 
     private fun configuration() = SwiftPackageConfiguration(
         project = mockk(relaxed = true),
-        frameworkName = FrameworkName("project name"),
+        packageName = PackageName.of("package name").orNull!!,
         toolVersion = SwiftToolVersion.of("42")!!,
         platforms = "",
         distributionMode = DistributionMode.Local,

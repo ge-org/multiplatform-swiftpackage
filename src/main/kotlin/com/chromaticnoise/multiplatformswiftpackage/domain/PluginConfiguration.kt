@@ -5,7 +5,7 @@ import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.P
 
 internal class PluginConfiguration private constructor(
     val buildConfiguration: BuildConfiguration,
-    val frameworkName: FrameworkName,
+    val packageName: PackageName,
     val outputDirectory: OutputDirectory,
     val swiftToolsVersion: SwiftToolVersion,
     val distributionMode: DistributionMode,
@@ -15,6 +15,7 @@ internal class PluginConfiguration private constructor(
     internal companion object {
         fun of(extension: SwiftPackageExtension): Either<List<PluginConfigurationError>, PluginConfiguration> {
             val targetPlatforms = extension.targetPlatforms.platforms
+            val packageName = extension.getPackageName()
 
             val errors = mutableListOf<PluginConfigurationError>().apply {
                 if (extension.swiftToolsVersion == null) {
@@ -33,13 +34,15 @@ internal class PluginConfiguration private constructor(
                 if (extension.appleTargets.isEmpty() && targetPlatforms.isNotEmpty()) {
                     add(MissingAppleTargets)
                 }
+
+                packageName.leftValueOrNull?.let { error -> add(error) }
             }
 
             return if (errors.isEmpty()) {
                 Either.Right(
                     PluginConfiguration(
                         extension.buildConfiguration,
-                        extension.frameworkName,
+                        packageName.orNull!!,
                         extension.outputDirectory,
                         extension.swiftToolsVersion!!,
                         extension.distributionMode,
@@ -51,6 +54,11 @@ internal class PluginConfiguration private constructor(
                 Either.Left(errors)
             }
         }
+
+        private fun SwiftPackageExtension.getPackageName(): Either<PluginConfigurationError, PackageName> = packageName
+            ?: appleTargets.getFrameworks(buildConfiguration).firstOrNull()?.let { framework ->
+                PackageName.of(framework.baseName)
+            } ?: Either.Left(InvalidPackageName(null))
     }
 
     internal sealed class PluginConfigurationError {
@@ -58,5 +66,6 @@ internal class PluginConfiguration private constructor(
         data class InvalidTargetName(val name: String) : PluginConfigurationError()
         object MissingTargetPlatforms : PluginConfigurationError()
         object MissingAppleTargets : PluginConfigurationError()
+        data class InvalidPackageName(val name: String?) : PluginConfigurationError()
     }
 }

@@ -4,9 +4,11 @@ import com.chromaticnoise.multiplatformswiftpackage.SwiftPackageExtension
 import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError.*
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.TestCase
+import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import java.io.File
 
 class PluginConfigurationTest : BehaviorSpec() {
@@ -46,6 +48,38 @@ class PluginConfigurationTest : BehaviorSpec() {
 
                 Then("an error should be returned") {
                     (PluginConfiguration.of(extension) as Either.Left).value.contains(MissingAppleTargets)
+                }
+            }
+
+            When("the package name produced errors") {
+                val expectedError = InvalidPackageName(null)
+                extension.packageName = Either.Left(expectedError)
+
+                Then("an error should be returned") {
+                    (PluginConfiguration.of(extension) as Either.Left).value.contains(expectedError)
+                }
+            }
+
+            When("the package name is null and no apple framework exists") {
+                extension.packageName = null
+                extension.appleTargets = emptyList()
+
+                Then("an error should be returned") {
+                    (PluginConfiguration.of(extension) as Either.Left).value.contains(InvalidPackageName(null))
+                }
+            }
+
+            When("the package name is null and apple frameworks exist") {
+                val expectedName = "expected name"
+                val framework = mockk<Framework> { every { baseName } returns expectedName }
+                extension.swiftToolsVersion = SwiftToolVersion.of("42")
+                extension.packageName = null
+                extension.appleTargets = listOf(
+                    mockk { every { framework(any()) } returns framework }
+                )
+
+                Then("the base name of the first framework should be used") {
+                    PluginConfiguration.of(extension).orNull!!.packageName.value shouldBe expectedName
                 }
             }
         }

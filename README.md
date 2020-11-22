@@ -48,13 +48,18 @@ multiplatformSwiftPackage {
 }
 ```
 
-### Framework Name
-By default, the plugin will create a package with the same name as the project itself.
-You can configure the name of the generated package by providing your own framework name.
+### Package Name
+By default, the name of the Swift package will be the base name of the first framework found in the project.
+However, you can declare a different name for the package.
+This might be useful if your frameworks have different base names, and you want your package to have a common name.
 
 ```kotlin
-frameworkName(FrameworkName("MySwiftFramework"))
+packageName("MyAwesomeKit")
 ```
+
+Hint:
+If the cocoapods plugin is applied the name of the package will default to the value assigned to the `frameworkName` property.
+Otherwise, the value of the `baseName` property of the framework configuration will be used.
 
 ### Output Directory
 By default, the plugin will write all files into the _swiftpackage_ folder in the project directory.

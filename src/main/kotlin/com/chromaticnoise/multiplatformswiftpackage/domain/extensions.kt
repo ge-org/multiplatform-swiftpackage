@@ -1,6 +1,7 @@
 package com.chromaticnoise.multiplatformswiftpackage.domain
 
 import org.gradle.api.Action
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.KonanTarget
 
@@ -34,3 +35,8 @@ internal val TargetName.konanTarget: KonanTarget get() = when (this) {
     TargetName.TvOSx64 -> KonanTarget.TVOS_X64
     TargetName.MacOSx64 -> KonanTarget.MACOS_X64
 }
+
+internal fun Collection<AppleTarget>.getFrameworks(buildConfiguration: BuildConfiguration): Collection<Framework> =
+    mapNotNull { target ->
+        target.framework(buildConfiguration)
+    }

@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 tbd
 
+## [2.0.0]
+### Added
+- You can now declare the name of the Swift package [#5](https://github.com/ge-org/multiplatform-swiftpackage/pull/5).
+  Thanks for the collaboration [@JUSTINMKAUFMAN](https://github.com/JUSTINMKAUFMAN)
+```kotlin
+packageName("MyAwesomeKit")
+```
+
+### Changed
+- BREAKING: By default the name of the Swift package is now the base name of the framework instead of the name of the project.
+
 ## [1.0.2]
 ### Fixed
 - Fix a bug where target names were not always resolved correctly

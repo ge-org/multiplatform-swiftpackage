@@ -33,5 +33,9 @@ private fun List<PluginConfigurationError>.toErrorMessage() = joinToString("\n\n
         * Target name is invalid: ${error.name}
           Only the following target names are valid: ${TargetName.values().joinToString { it.identifier }}
         """.trimIndent()
+        is PluginConfigurationError.InvalidPackageName -> """
+        * Package name is invalid: ${error.name}
+          Either declare the base name of your frameworks or use a non-empty package name.
+        """.trimIndent()
     }
 }

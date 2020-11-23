@@ -13,7 +13,7 @@ internal fun Project.registerCreateZipFileTask() {
 
         val configuration = getConfigurationOrThrow()
         val outputDirectory = configuration.outputDirectory.value
-        archiveFileName.set(zipFileName(project))
+        archiveFileName.set(zipFileName(project, configuration.packageName))
         destinationDirectory.set(outputDirectory)
         from(outputDirectory) {
             include("**/*.xcframework/")

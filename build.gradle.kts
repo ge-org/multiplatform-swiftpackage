@@ -17,6 +17,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:4.3.0")
     testImplementation("io.kotest:kotest-property:4.3.0")
     testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation(kotlin("gradle-plugin"))
 }
 
 java {

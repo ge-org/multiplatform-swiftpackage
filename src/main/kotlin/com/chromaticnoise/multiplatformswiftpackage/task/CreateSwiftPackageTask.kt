@@ -22,10 +22,11 @@ internal fun Project.registerCreateSwiftPackageTask() {
 
             val packageConfiguration = SwiftPackageConfiguration(
                 project = project,
+                packageName = configuration.packageName,
                 toolVersion = configuration.swiftToolsVersion,
                 platforms = platforms(configuration),
                 distributionMode = configuration.distributionMode,
-                zipChecksum = zipFileChecksum(project, configuration.outputDirectory)
+                zipChecksum = zipFileChecksum(project, configuration.outputDirectory, configuration.packageName)
             )
 
             SimpleTemplateEngine()

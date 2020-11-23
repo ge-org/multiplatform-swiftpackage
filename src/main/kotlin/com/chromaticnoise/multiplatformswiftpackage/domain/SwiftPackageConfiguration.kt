@@ -6,6 +6,7 @@ import org.gradle.api.Project
 
 internal data class SwiftPackageConfiguration(
     private val project: Project,
+    private val packageName: PackageName,
     private val toolVersion: SwiftToolVersion,
     private val platforms: String,
     private val distributionMode: DistributionMode,
@@ -14,12 +15,12 @@ internal data class SwiftPackageConfiguration(
 
     private val distributionUrl = when (distributionMode) {
         DistributionMode.Local -> null
-        is DistributionMode.Remote -> distributionMode.url.appendPath(zipFileName(project))
+        is DistributionMode.Remote -> distributionMode.url.appendPath(zipFileName(project, packageName))
     }
 
     internal val templateProperties = mapOf(
         "toolsVersion" to toolVersion.name,
-        "name" to project.name,
+        "name" to packageName.value,
         "platforms" to platforms,
         "isLocal" to (distributionMode == DistributionMode.Local),
         "url" to distributionUrl?.value,

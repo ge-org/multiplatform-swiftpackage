@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 tbd
 
+## [2.0.1]
+### Changed
+- The class `MultiplatformSwiftPackagePlugin` is now public [#7](https://github.com/ge-org/multiplatform-swiftpackage/pull/7).
+
+  Thanks [@netroy](https://github.com/netroy)
+
 ## [2.0.0]
 ### Added
 - You can now declare the name of the Swift package [#5](https://github.com/ge-org/multiplatform-swiftpackage/pull/5).

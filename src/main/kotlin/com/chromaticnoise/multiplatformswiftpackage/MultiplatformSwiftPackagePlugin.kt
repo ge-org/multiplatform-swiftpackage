@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 /**
  * Plugin to generate XCFramework and Package.swift file for Apple platform targets.
  */
-internal class MultiplatformSwiftPackagePlugin : Plugin<Project> {
+public class MultiplatformSwiftPackagePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val extension = project.extensions.create(EXTENSION_NAME, SwiftPackageExtension::class.java, project)

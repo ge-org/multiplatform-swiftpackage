@@ -1,7 +1,6 @@
 package com.chromaticnoise.multiplatformswiftpackage.task
 
 import com.chromaticnoise.multiplatformswiftpackage.domain.getConfigurationOrThrow
-import com.chromaticnoise.multiplatformswiftpackage.domain.getFrameworks
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
 import java.io.File
@@ -12,9 +11,9 @@ internal fun Project.registerCreateXCFrameworkTask() = tasks.register("createXCF
 
     val configuration = getConfigurationOrThrow()
     val xcFrameworkDestination = File(configuration.outputDirectory.value, "${configuration.packageName.value}.xcframework")
-    val frameworks = configuration.appleTargets.getFrameworks(configuration.buildConfiguration)
+    val frameworks = configuration.appleTargets.mapNotNull { it.getFramework(configuration.buildConfiguration) }
 
-    dependsOn(frameworks.map { it.linkTaskName })
+    dependsOn(frameworks.map { it.linkTask.name })
 
     executable = "xcodebuild"
     args(mutableListOf<String>().apply {
@@ -25,8 +24,7 @@ internal fun Project.registerCreateXCFrameworkTask() = tasks.register("createXCF
             add("-framework")
             add(framework.outputFile.path)
 
-            val dsymFile = File(framework.outputFile.parent, "${framework.baseName}.framework.dSYM")
-            if (dsymFile.exists()) {
+            framework.dsymFile.takeIf { it.exists() }?.let { dsymFile ->
                 add("-debug-symbols")
                 add(dsymFile.path)
             }

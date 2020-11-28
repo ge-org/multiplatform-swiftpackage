@@ -8,7 +8,6 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import java.io.File
 
 class PluginConfigurationTest : BehaviorSpec() {
@@ -71,11 +70,11 @@ class PluginConfigurationTest : BehaviorSpec() {
 
             When("the package name is null and apple frameworks exist") {
                 val expectedName = "expected name"
-                val framework = mockk<Framework> { every { baseName } returns expectedName }
+                val framework = AppleFramework(AppleFrameworkOutputFile(mockk()), AppleFrameworkName(expectedName), AppleFrameworkLinkTask(""))
                 extension.swiftToolsVersion = SwiftToolVersion.of("42")
                 extension.packageName = null
                 extension.appleTargets = listOf(
-                    mockk { every { framework(any()) } returns framework }
+                    mockk { every { getFramework(any()) } returns framework }
                 )
 
                 Then("the base name of the first framework should be used") {

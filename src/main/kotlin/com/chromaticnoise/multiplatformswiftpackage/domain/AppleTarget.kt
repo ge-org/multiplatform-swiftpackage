@@ -1,14 +1,20 @@
 package com.chromaticnoise.multiplatformswiftpackage.domain
 
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeOutputKind
+import java.io.File
 
 internal class AppleTarget private constructor(val nativeTarget: KotlinNativeTarget) {
 
-    internal fun framework(buildConfiguration: BuildConfiguration): Framework? =
+    internal fun getFramework(buildConfiguration: BuildConfiguration): AppleFramework? =
         try {
-            nativeTarget.binaries.getFramework(buildConfiguration.name)
+            val nativeBinary = nativeTarget.binaries.find { binary ->
+                binary.buildType.getName().equals(buildConfiguration.name, ignoreCase = true) &&
+                    binary.outputKind == NativeOutputKind.FRAMEWORK
+            }
+            AppleFramework.of(nativeBinary)
         } catch (_: Exception) { null }
 
     internal companion object {

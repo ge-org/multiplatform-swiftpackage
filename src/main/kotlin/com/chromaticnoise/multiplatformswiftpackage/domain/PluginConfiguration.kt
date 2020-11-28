@@ -56,8 +56,8 @@ internal class PluginConfiguration private constructor(
         }
 
         private fun SwiftPackageExtension.getPackageName(): Either<PluginConfigurationError, PackageName> = packageName
-            ?: appleTargets.getFrameworks(buildConfiguration).firstOrNull()?.let { framework ->
-                PackageName.of(framework.baseName)
+            ?: appleTargets.map { it.getFramework(buildConfiguration) }.firstOrNull()?.let { framework ->
+                PackageName.of(framework.name.value)
             } ?: Either.Left(InvalidPackageName(null))
     }
 

@@ -1,6 +1,8 @@
 package com.chromaticnoise.multiplatformswiftpackage.task
 
-import com.chromaticnoise.multiplatformswiftpackage.domain.*
+import com.chromaticnoise.multiplatformswiftpackage.domain.SwiftPackageConfiguration
+import com.chromaticnoise.multiplatformswiftpackage.domain.SwiftPackageTemplate.TemplateFile
+import com.chromaticnoise.multiplatformswiftpackage.domain.getConfigurationOrThrow
 import groovy.text.SimpleTemplateEngine
 import org.gradle.api.Project
 import java.io.File
@@ -21,26 +23,25 @@ internal fun Project.registerCreateSwiftPackageTask() {
             }
 
             val packageConfiguration = SwiftPackageConfiguration(
-                project = project,
+                project,
+                packageTemplate = configuration.packageTemplate,
+                toolsVersion = configuration.swiftToolsVersion,
                 packageName = configuration.packageName,
-                toolVersion = configuration.swiftToolsVersion,
-                platforms = platforms(configuration),
                 distributionMode = configuration.distributionMode,
-                zipChecksum = zipFileChecksum(project, configuration.outputDirectory, configuration.packageName)
+                outputDirectory = configuration.outputDirectory,
+                targetPlatforms = configuration.targetPlatforms,
+                appleTargets = configuration.appleTargets
             )
 
             SimpleTemplateEngine()
-                .createTemplate(SwiftPackageConfiguration.templateFile)
+                .run {
+                    when (val file = packageConfiguration.templateFile) {
+                        is TemplateFile.Resource -> createTemplate(file.url)
+                        is TemplateFile.File -> createTemplate(file.value)
+                    }
+                }
                 .make(packageConfiguration.templateProperties)
                 .writeTo(packageFile.writer())
         }
     }
 }
-
-private fun platforms(configuration: PluginConfiguration): String = configuration.targetPlatforms.flatMap { platform ->
-    configuration.appleTargets
-        .filter { appleTarget -> platform.targets.firstOrNull { it.konanTarget == appleTarget.nativeTarget.konanTarget } != null }
-        .mapNotNull { target -> target.nativeTarget.konanTarget.family.swiftPackagePlatformName }
-        .distinct()
-        .map { platformName -> ".$platformName(.v${platform.version.name})" }
-}.joinToString(",\n")

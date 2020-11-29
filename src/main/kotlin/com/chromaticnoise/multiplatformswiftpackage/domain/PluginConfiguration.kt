@@ -10,7 +10,8 @@ internal class PluginConfiguration private constructor(
     val swiftToolsVersion: SwiftToolVersion,
     val distributionMode: DistributionMode,
     val targetPlatforms: Collection<TargetPlatform>,
-    val appleTargets: Collection<AppleTarget>
+    val appleTargets: Collection<AppleTarget>,
+    val packageTemplate: SwiftPackageTemplate
 ) {
     internal companion object {
         fun of(extension: SwiftPackageExtension): Either<List<PluginConfigurationError>, PluginConfiguration> {
@@ -47,7 +48,8 @@ internal class PluginConfiguration private constructor(
                         extension.swiftToolsVersion!!,
                         extension.distributionMode,
                         targetPlatforms,
-                        extension.appleTargets
+                        extension.appleTargets,
+                        extension.packageTemplate
                     )
                 )
             } else {

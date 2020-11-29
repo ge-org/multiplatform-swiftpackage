@@ -2,8 +2,10 @@ package com.chromaticnoise.multiplatformswiftpackage
 
 import com.chromaticnoise.multiplatformswiftpackage.domain.*
 import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError
+import com.chromaticnoise.multiplatformswiftpackage.domain.SwiftPackageTemplate.TemplateFile
 import com.chromaticnoise.multiplatformswiftpackage.dsl.BuildConfigurationDSL
 import com.chromaticnoise.multiplatformswiftpackage.dsl.DistributionModeDSL
+import com.chromaticnoise.multiplatformswiftpackage.dsl.PackageTemplateDsl
 import com.chromaticnoise.multiplatformswiftpackage.dsl.TargetPlatformDsl
 import org.gradle.api.Action
 import org.gradle.api.Project
@@ -18,6 +20,10 @@ public open class SwiftPackageExtension(project: Project) {
     internal var distributionMode: DistributionMode = DistributionMode.Local
     internal var targetPlatforms: Collection<Either<List<PluginConfigurationError>, TargetPlatform>> = emptyList()
     internal var appleTargets: Collection<AppleTarget> = emptyList()
+    internal var packageTemplate: SwiftPackageTemplate = SwiftPackageTemplate(
+        file = TemplateFile.Resource(MultiplatformSwiftPackagePlugin::class.java.getResource("/templates/Package.swift.template")),
+        properties = emptyMap()
+    )
 
     /**
      * Sets the name of the Swift package.
@@ -71,6 +77,17 @@ public open class SwiftPackageExtension(project: Project) {
     public fun targetPlatforms(builder: Action<TargetPlatformDsl>) {
         builder.build(TargetPlatformDsl()) { dsl ->
             targetPlatforms = dsl.targetPlatforms
+        }
+    }
+
+    /**
+     * Builder for the [SwiftPackageTemplate].
+     *
+     * @param path that points to the template file.
+     */
+    public fun packageTemplate(path: File, builder: Action<PackageTemplateDsl>? = null) {
+        builder?.build(PackageTemplateDsl(path)) { dsl ->
+            packageTemplate = dsl.packageTemplate
         }
     }
 }

@@ -1,0 +1,44 @@
+public final class com/chromaticnoise/multiplatformswiftpackage/MultiplatformSwiftPackagePlugin : org/gradle/api/Plugin {
+	public static final field Companion Lcom/chromaticnoise/multiplatformswiftpackage/MultiplatformSwiftPackagePlugin$Companion;
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public class com/chromaticnoise/multiplatformswiftpackage/SwiftPackageExtension {
+	public fun <init> (Lorg/gradle/api/Project;)V
+	public final fun buildConfiguration (Lorg/gradle/api/Action;)V
+	public final fun distributionMode (Lorg/gradle/api/Action;)V
+	public final fun outputDirectory (Ljava/io/File;)V
+	public final fun packageName (Ljava/lang/String;)V
+	public final fun swiftToolsVersion (Ljava/lang/String;)V
+	public final fun targetPlatforms (Lorg/gradle/api/Action;)V
+}
+
+public final class com/chromaticnoise/multiplatformswiftpackage/dsl/BuildConfigurationDSL {
+	public fun <init> ()V
+	public final fun debug ()V
+	public final fun named (Ljava/lang/String;)V
+	public final fun release ()V
+}
+
+public final class com/chromaticnoise/multiplatformswiftpackage/dsl/DistributionModeDSL {
+	public fun <init> ()V
+	public final fun local ()V
+	public final fun remote (Ljava/lang/String;)V
+}
+
+public final class com/chromaticnoise/multiplatformswiftpackage/dsl/TargetPlatformDsl {
+	public fun <init> ()V
+	public final fun iOS (Lorg/gradle/api/Action;)V
+	public final fun macOS (Lorg/gradle/api/Action;)V
+	public final fun targets ([Ljava/lang/String;Lorg/gradle/api/Action;)V
+	public final fun tvOS (Lorg/gradle/api/Action;)V
+	public final fun watchOS (Lorg/gradle/api/Action;)V
+}
+
+public final class com/chromaticnoise/multiplatformswiftpackage/dsl/TargetPlatformDsl$PlatformVersionDsl {
+	public fun <init> ()V
+	public final fun v (Ljava/lang/String;)V
+}
+

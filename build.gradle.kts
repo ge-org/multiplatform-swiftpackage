@@ -1,3 +1,15 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlinx:binary-compatibility-validator:0.2.4")
+    }
+}
+
+apply(plugin = "binary-compatibility-validator")
+
 plugins {
     `kotlin-dsl`
     `java-gradle-plugin`

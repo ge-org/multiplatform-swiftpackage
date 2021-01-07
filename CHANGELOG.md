@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 tbd
 
+## [2.0.3]
+### Added
+- The plugin DSL is now compatible with Groovy [#17](https://github.com/ge-org/multiplatform-swiftpackage/issues/17)
+
 ## [2.0.2]
 ### Fixed
 - Fix a bug where the plugin was not able to detect the frameworks for some project configurations

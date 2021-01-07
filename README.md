@@ -132,6 +132,18 @@ targetPlatforms {
 }
 ```
 
+__Note:__
+If you are using Groovy for the build script the target names must be passed as a list.
+```groovy
+targetPlatforms {
+  // the catch-all DSL works the same in Groovy and Kotlin
+  iOS { v("13") }
+
+  // however, Groovy requires a list when the targets() DSL is used
+  targets(['macosX64']) { v('10.0') }
+}
+```
+
 Available platform shortcuts are:
 - `iOS { v("xxx") }`
 - `tvOS { v("xxx") }`

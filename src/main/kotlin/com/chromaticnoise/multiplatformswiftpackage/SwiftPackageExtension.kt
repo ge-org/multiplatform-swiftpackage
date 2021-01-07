@@ -5,8 +5,9 @@ import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.P
 import com.chromaticnoise.multiplatformswiftpackage.dsl.BuildConfigurationDSL
 import com.chromaticnoise.multiplatformswiftpackage.dsl.DistributionModeDSL
 import com.chromaticnoise.multiplatformswiftpackage.dsl.TargetPlatformDsl
-import org.gradle.api.Action
+import groovy.lang.Closure
 import org.gradle.api.Project
+import org.gradle.util.ConfigureUtil
 import java.io.File
 
 public open class SwiftPackageExtension(project: Project) {
@@ -50,27 +51,42 @@ public open class SwiftPackageExtension(project: Project) {
     /**
      * Builder for the [BuildConfiguration].
      */
-    public fun buildConfiguration(builder: Action<BuildConfigurationDSL>) {
-        builder.build(BuildConfigurationDSL()) { dsl ->
+    public fun buildConfiguration(configure: BuildConfigurationDSL.() -> Unit) {
+        BuildConfigurationDSL().also { dsl ->
+            dsl.configure()
             buildConfiguration = dsl.buildConfiguration
         }
+    }
+
+    public fun buildConfiguration(configure: Closure<BuildConfigurationDSL>) {
+        buildConfiguration { ConfigureUtil.configure(configure, this) }
     }
 
     /**
      * Builder for the [DistributionMode].
      */
-    public fun distributionMode(builder: Action<DistributionModeDSL>) {
-        builder.build(DistributionModeDSL()) { dsl ->
+    public fun distributionMode(configure: DistributionModeDSL.() -> Unit) {
+        DistributionModeDSL().also { dsl ->
+            dsl.configure()
             distributionMode = dsl.distributionMode
         }
+    }
+
+    public fun distributionMode(configure: Closure<DistributionModeDSL>) {
+        distributionMode { ConfigureUtil.configure(configure, this) }
     }
 
     /**
      * Builder for instances of [TargetPlatform].
      */
-    public fun targetPlatforms(builder: Action<TargetPlatformDsl>) {
-        builder.build(TargetPlatformDsl()) { dsl ->
+    public fun targetPlatforms(configure: TargetPlatformDsl.() -> Unit) {
+        TargetPlatformDsl().also { dsl ->
+            dsl.configure()
             targetPlatforms = dsl.targetPlatforms
         }
+    }
+
+    public fun targetPlatforms(configure: Closure<TargetPlatformDsl>) {
+        targetPlatforms { ConfigureUtil.configure(configure, this) }
     }
 }

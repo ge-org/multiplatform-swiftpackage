@@ -1,10 +1,11 @@
 package com.chromaticnoise.multiplatformswiftpackage.domain
 
+import com.chromaticnoise.multiplatformswiftpackage.dsl.PackageTemplateDSL
 import java.net.URL
 
 internal data class SwiftPackageTemplate(
     val file: TemplateFile,
-    val properties: Map<String, Any?>
+    val configure: PackageTemplateDSL.() -> Unit
 ) {
 
     internal sealed class TemplateFile {

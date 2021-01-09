@@ -6,11 +6,17 @@ public final class com/chromaticnoise/multiplatformswiftpackage/MultiplatformSwi
 }
 
 public class com/chromaticnoise/multiplatformswiftpackage/SwiftPackageExtension {
+	public static final field Companion Lcom/chromaticnoise/multiplatformswiftpackage/SwiftPackageExtension$Companion;
 	public fun <init> (Lorg/gradle/api/Project;)V
 	public final fun buildConfiguration (Lorg/gradle/api/Action;)V
 	public final fun distributionMode (Lorg/gradle/api/Action;)V
 	public final fun outputDirectory (Ljava/io/File;)V
 	public final fun packageName (Ljava/lang/String;)V
+	public final fun packageTemplate (Lgroovy/lang/Closure;)V
+	public final fun packageTemplate (Ljava/io/File;)V
+	public final fun packageTemplate (Ljava/io/File;Lgroovy/lang/Closure;)V
+	public final fun packageTemplate (Ljava/io/File;Lkotlin/jvm/functions/Function1;)V
+	public final fun packageTemplate (Lkotlin/jvm/functions/Function1;)V
 	public final fun swiftToolsVersion (Ljava/lang/String;)V
 	public final fun targetPlatforms (Lorg/gradle/api/Action;)V
 }
@@ -28,6 +34,58 @@ public final class com/chromaticnoise/multiplatformswiftpackage/dsl/Distribution
 	public final fun remote (Ljava/lang/String;)V
 }
 
+public final class com/chromaticnoise/multiplatformswiftpackage/dsl/PackageTemplateDSL {
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/Collection;
+	public final fun component4 ()Lcom/chromaticnoise/multiplatformswiftpackage/dsl/RemoteDistribution;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/Collection;Lcom/chromaticnoise/multiplatformswiftpackage/dsl/RemoteDistribution;Ljava/util/Map;)Lcom/chromaticnoise/multiplatformswiftpackage/dsl/PackageTemplateDSL;
+	public static synthetic fun copy$default (Lcom/chromaticnoise/multiplatformswiftpackage/dsl/PackageTemplateDSL;Ljava/lang/String;Ljava/lang/String;Ljava/util/Collection;Lcom/chromaticnoise/multiplatformswiftpackage/dsl/RemoteDistribution;Ljava/util/Map;ILjava/lang/Object;)Lcom/chromaticnoise/multiplatformswiftpackage/dsl/PackageTemplateDSL;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;)Ljava/lang/Object;
+	public final fun get (Ljava/lang/String;)Ljava/lang/Object;
+	public final fun getPackageName ()Ljava/lang/String;
+	public final fun getPlatforms ()Ljava/util/Collection;
+	public final fun getRemoteDistribution ()Lcom/chromaticnoise/multiplatformswiftpackage/dsl/RemoteDistribution;
+	public final fun getToolsVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun set (Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;Ljava/lang/Object;)V
+	public final fun set (Ljava/lang/String;Ljava/lang/Object;)V
+	public final fun setPackageName (Ljava/lang/String;)V
+	public final fun setPlatforms (Ljava/util/Collection;)V
+	public final fun setRemoteDistribution (Lcom/chromaticnoise/multiplatformswiftpackage/dsl/RemoteDistribution;)V
+	public final fun setToolsVersion (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromaticnoise/multiplatformswiftpackage/dsl/Platform {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/chromaticnoise/multiplatformswiftpackage/dsl/Platform;
+	public static synthetic fun copy$default (Lcom/chromaticnoise/multiplatformswiftpackage/dsl/Platform;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/chromaticnoise/multiplatformswiftpackage/dsl/Platform;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun setName (Ljava/lang/String;)V
+	public final fun setVersion (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/chromaticnoise/multiplatformswiftpackage/dsl/RemoteDistribution {
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBaseUrl ()Ljava/lang/String;
+	public final fun getFullUrl ()Ljava/lang/String;
+	public final fun getZipFileChecksum ()Ljava/lang/String;
+	public final fun getZipFileName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun setBaseUrl (Ljava/lang/String;)V
+	public final fun setZipFileChecksum (Ljava/lang/String;)V
+	public final fun setZipFileName (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/chromaticnoise/multiplatformswiftpackage/dsl/TargetPlatformDsl {
 	public fun <init> ()V
 	public final fun iOS (Lorg/gradle/api/Action;)V
@@ -40,5 +98,16 @@ public final class com/chromaticnoise/multiplatformswiftpackage/dsl/TargetPlatfo
 public final class com/chromaticnoise/multiplatformswiftpackage/dsl/TargetPlatformDsl$PlatformVersionDsl {
 	public fun <init> ()V
 	public final fun v (Ljava/lang/String;)V
+}
+
+public final class com/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey : java/lang/Enum {
+	public static final field Checksum Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;
+	public static final field IsLocal Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;
+	public static final field Name Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;
+	public static final field Platforms Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;
+	public static final field ToolsVersion Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;
+	public static final field Url Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;
+	public static fun valueOf (Ljava/lang/String;)Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;
+	public static fun values ()[Lcom/chromaticnoise/multiplatformswiftpackage/dsl/TemplateKey;
 }
 

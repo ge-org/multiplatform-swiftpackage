@@ -26,7 +26,8 @@ internal fun Project.registerCreateSwiftPackageTask() {
                 toolVersion = configuration.swiftToolsVersion,
                 platforms = platforms(configuration),
                 distributionMode = configuration.distributionMode,
-                zipChecksum = zipFileChecksum(project, configuration.outputDirectory, configuration.packageName)
+                zipChecksum = zipFileChecksum(project, configuration.outputDirectory, configuration.zipFileName),
+                zipFileName = configuration.zipFileName
             )
 
             SimpleTemplateEngine()

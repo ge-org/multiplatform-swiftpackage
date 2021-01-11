@@ -51,7 +51,7 @@ class PluginConfigurationTest : BehaviorSpec() {
             }
 
             When("the package name produced errors") {
-                val expectedError = InvalidPackageName(null)
+                val expectedError = BlankPackageName
                 extension.packageName = Either.Left(expectedError)
 
                 Then("an error should be returned") {
@@ -64,7 +64,7 @@ class PluginConfigurationTest : BehaviorSpec() {
                 extension.appleTargets = emptyList()
 
                 Then("an error should be returned") {
-                    (PluginConfiguration.of(extension) as Either.Left).value.contains(InvalidPackageName(null))
+                    (PluginConfiguration.of(extension) as Either.Left).value.contains(BlankPackageName)
                 }
             }
 
@@ -79,6 +79,15 @@ class PluginConfigurationTest : BehaviorSpec() {
 
                 Then("the base name of the first framework should be used") {
                     PluginConfiguration.of(extension).orNull!!.packageName.value shouldBe expectedName
+                }
+            }
+
+            When("the ZIP file name produced errors") {
+                val expectedError = BlankZipFileName
+                extension.zipFileName = Either.Left(expectedError)
+
+                Then("an error should be returned") {
+                    (PluginConfiguration.of(extension) as Either.Left).value.contains(expectedError)
                 }
             }
         }

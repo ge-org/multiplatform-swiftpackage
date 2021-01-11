@@ -97,6 +97,14 @@ distributionMode { remote("https://example.com") }
 distributionMode { remote("https://example.com/MyLib.zip") }
 ```
 
+### ZIP File Name
+By default, the name of the generated ZIP file consists of the package name concatenated with the project's version.
+You can configure the name by setting a custom value.
+The `.zip` file extension will be added during the build and should be omitted here.
+```kotlin
+zipFileName("MyAwesomeKit")
+```
+
 ### Build Configuration
 Apple frameworks can be built with different configurations. By default, these are _release_ and _debug_.
 However, you can also create your own configurations.
@@ -129,6 +137,18 @@ targetPlatforms {
 
   // macOS with minimum version 10.0
   targets("macosX64") { v("10.0") }
+}
+```
+
+__Note:__
+If you are using Groovy for the build script the target names must be passed as a list.
+```groovy
+targetPlatforms {
+  // the catch-all DSL works the same in Groovy and Kotlin
+  iOS { v("13") }
+
+  // however, Groovy requires a list when the targets() DSL is used
+  targets(['macosX64']) { v('10.0') }
 }
 ```
 

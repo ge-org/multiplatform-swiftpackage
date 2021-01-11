@@ -7,12 +7,16 @@ public final class com/chromaticnoise/multiplatformswiftpackage/MultiplatformSwi
 
 public class com/chromaticnoise/multiplatformswiftpackage/SwiftPackageExtension {
 	public fun <init> (Lorg/gradle/api/Project;)V
-	public final fun buildConfiguration (Lorg/gradle/api/Action;)V
-	public final fun distributionMode (Lorg/gradle/api/Action;)V
+	public final fun buildConfiguration (Lgroovy/lang/Closure;)V
+	public final fun buildConfiguration (Lkotlin/jvm/functions/Function1;)V
+	public final fun distributionMode (Lgroovy/lang/Closure;)V
+	public final fun distributionMode (Lkotlin/jvm/functions/Function1;)V
 	public final fun outputDirectory (Ljava/io/File;)V
 	public final fun packageName (Ljava/lang/String;)V
 	public final fun swiftToolsVersion (Ljava/lang/String;)V
-	public final fun targetPlatforms (Lorg/gradle/api/Action;)V
+	public final fun targetPlatforms (Lgroovy/lang/Closure;)V
+	public final fun targetPlatforms (Lkotlin/jvm/functions/Function1;)V
+	public final fun zipFileName (Ljava/lang/String;)V
 }
 
 public final class com/chromaticnoise/multiplatformswiftpackage/dsl/BuildConfigurationDSL {
@@ -30,11 +34,16 @@ public final class com/chromaticnoise/multiplatformswiftpackage/dsl/Distribution
 
 public final class com/chromaticnoise/multiplatformswiftpackage/dsl/TargetPlatformDsl {
 	public fun <init> ()V
-	public final fun iOS (Lorg/gradle/api/Action;)V
-	public final fun macOS (Lorg/gradle/api/Action;)V
-	public final fun targets ([Ljava/lang/String;Lorg/gradle/api/Action;)V
-	public final fun tvOS (Lorg/gradle/api/Action;)V
-	public final fun watchOS (Lorg/gradle/api/Action;)V
+	public final fun iOS (Lgroovy/lang/Closure;)V
+	public final fun iOS (Lkotlin/jvm/functions/Function1;)V
+	public final fun macOS (Lgroovy/lang/Closure;)V
+	public final fun macOS (Lkotlin/jvm/functions/Function1;)V
+	public final fun targets (Ljava/util/Collection;Lgroovy/lang/Closure;)V
+	public final fun targets ([Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public final fun tvOS (Lgroovy/lang/Closure;)V
+	public final fun tvOS (Lkotlin/jvm/functions/Function1;)V
+	public final fun watchOS (Lgroovy/lang/Closure;)V
+	public final fun watchOS (Lkotlin/jvm/functions/Function1;)V
 }
 
 public final class com/chromaticnoise/multiplatformswiftpackage/dsl/TargetPlatformDsl$PlatformVersionDsl {

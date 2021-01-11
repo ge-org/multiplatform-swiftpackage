@@ -52,10 +52,13 @@ class SwiftPackageConfigurationTest : StringSpec() {
                 .templateProperties["url"] as String).shouldStartWith("my url")
         }
 
-        "url property should end with the zip file name" {
+        "url property should end with the zip file name and the .zip file extension" {
             (configuration()
-                .copy(distributionMode = DistributionMode.Remote(DistributionURL("my url")))
-                .templateProperties["url"] as String).shouldEndWith(".zip")
+                .copy(
+                    distributionMode = DistributionMode.Remote(DistributionURL("url")),
+                    zipFileName = ZipFileName.of("zip file name").orNull!!
+                )
+                .templateProperties["url"] as String).shouldEndWith("zip file name.zip")
         }
 
         "checksum property should match the value of zip checksum" {
@@ -71,6 +74,7 @@ class SwiftPackageConfigurationTest : StringSpec() {
         toolVersion = SwiftToolVersion.of("42")!!,
         platforms = "",
         distributionMode = DistributionMode.Local,
-        zipChecksum = ""
+        zipChecksum = "",
+        zipFileName = ZipFileName.of("file name").orNull!!
     )
 }

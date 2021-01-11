@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-tbd
+### Added
+- The name of the generated ZIP file can now be customized
+[#22](https://github.com/ge-org/multiplatform-swiftpackage/issues/22)
 
 ## [2.0.3]
 ### Added

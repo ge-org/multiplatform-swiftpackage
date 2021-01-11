@@ -16,6 +16,7 @@ public class com/chromaticnoise/multiplatformswiftpackage/SwiftPackageExtension 
 	public final fun swiftToolsVersion (Ljava/lang/String;)V
 	public final fun targetPlatforms (Lgroovy/lang/Closure;)V
 	public final fun targetPlatforms (Lkotlin/jvm/functions/Function1;)V
+	public final fun zipFileName (Ljava/lang/String;)V
 }
 
 public final class com/chromaticnoise/multiplatformswiftpackage/dsl/BuildConfigurationDSL {

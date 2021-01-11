@@ -10,7 +10,10 @@ tbd
 
 ## [2.0.3]
 ### Added
-- The plugin DSL is now compatible with Groovy [#17](https://github.com/ge-org/multiplatform-swiftpackage/issues/17)
+- The plugin DSL is now compatible with Groovy
+[#17](https://github.com/ge-org/multiplatform-swiftpackage/issues/17)
+- The name of the generated ZIP file can now be customized
+[#22](https://github.com/ge-org/multiplatform-swiftpackage/issues/22)
 
 ## [2.0.2]
 ### Fixed

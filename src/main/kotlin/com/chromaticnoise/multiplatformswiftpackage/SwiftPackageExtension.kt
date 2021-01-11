@@ -10,7 +10,7 @@ import org.gradle.api.Project
 import org.gradle.util.ConfigureUtil
 import java.io.File
 
-public open class SwiftPackageExtension(project: Project) {
+public open class SwiftPackageExtension(internal val project: Project) {
 
     internal var buildConfiguration: BuildConfiguration = BuildConfiguration.Release
     internal var packageName: Either<PluginConfigurationError, PackageName>? = null
@@ -19,6 +19,7 @@ public open class SwiftPackageExtension(project: Project) {
     internal var distributionMode: DistributionMode = DistributionMode.Local
     internal var targetPlatforms: Collection<Either<List<PluginConfigurationError>, TargetPlatform>> = emptyList()
     internal var appleTargets: Collection<AppleTarget> = emptyList()
+    internal var zipFileName: Either<PluginConfigurationError, ZipFileName>? = null
 
     /**
      * Sets the name of the Swift package.
@@ -88,5 +89,16 @@ public open class SwiftPackageExtension(project: Project) {
 
     public fun targetPlatforms(configure: Closure<TargetPlatformDsl>) {
         targetPlatforms { ConfigureUtil.configure(configure, this) }
+    }
+
+    /**
+     * Sets the name of the ZIP file.
+     * Do not append the `.zip` file extension since it will be added during the build.
+     *
+     * Defaults to the [packageName] concatenated with the project version. E.g.
+     * MyAwesomeKit-2.3.42-SNAPSHOT
+     */
+    public fun zipFileName(name: String) {
+        zipFileName = ZipFileName.of(name)
     }
 }

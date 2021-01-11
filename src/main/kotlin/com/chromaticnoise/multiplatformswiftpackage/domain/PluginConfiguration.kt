@@ -2,6 +2,7 @@ package com.chromaticnoise.multiplatformswiftpackage.domain
 
 import com.chromaticnoise.multiplatformswiftpackage.SwiftPackageExtension
 import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError.*
+import org.gradle.api.Project
 
 internal class PluginConfiguration private constructor(
     val buildConfiguration: BuildConfiguration,
@@ -10,7 +11,8 @@ internal class PluginConfiguration private constructor(
     val swiftToolsVersion: SwiftToolVersion,
     val distributionMode: DistributionMode,
     val targetPlatforms: Collection<TargetPlatform>,
-    val appleTargets: Collection<AppleTarget>
+    val appleTargets: Collection<AppleTarget>,
+    val zipFileName: ZipFileName
 ) {
     internal companion object {
         fun of(extension: SwiftPackageExtension): Either<List<PluginConfigurationError>, PluginConfiguration> {
@@ -36,6 +38,8 @@ internal class PluginConfiguration private constructor(
                 }
 
                 packageName.leftValueOrNull?.let { error -> add(error) }
+
+                extension.zipFileName?.leftValueOrNull?.let { error -> add(error) }
             }
 
             return if (errors.isEmpty()) {
@@ -47,7 +51,8 @@ internal class PluginConfiguration private constructor(
                         extension.swiftToolsVersion!!,
                         extension.distributionMode,
                         targetPlatforms,
-                        extension.appleTargets
+                        extension.appleTargets,
+                        extension.zipFileName?.orNull ?: defaultZipFileName(packageName.orNull!!, extension.project)
                     )
                 )
             } else {
@@ -58,7 +63,10 @@ internal class PluginConfiguration private constructor(
         private fun SwiftPackageExtension.getPackageName(): Either<PluginConfigurationError, PackageName> = packageName
             ?: appleTargets.map { it.getFramework(buildConfiguration) }.firstOrNull()?.let { framework ->
                 PackageName.of(framework.name.value)
-            } ?: Either.Left(InvalidPackageName(null))
+            } ?: Either.Left(BlankPackageName)
+
+        private fun defaultZipFileName(packageName: PackageName, project: Project) =
+            ZipFileName.of("${packageName.value}-${project.version}").orNull!!
     }
 
     internal sealed class PluginConfigurationError {
@@ -66,6 +74,7 @@ internal class PluginConfiguration private constructor(
         data class InvalidTargetName(val name: String) : PluginConfigurationError()
         object MissingTargetPlatforms : PluginConfigurationError()
         object MissingAppleTargets : PluginConfigurationError()
-        data class InvalidPackageName(val name: String?) : PluginConfigurationError()
+        object BlankPackageName : PluginConfigurationError()
+        object BlankZipFileName : PluginConfigurationError()
     }
 }

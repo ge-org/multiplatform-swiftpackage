@@ -1,9 +1,13 @@
 package com.chromaticnoise.multiplatformswiftpackage.dsl
 
-import com.chromaticnoise.multiplatformswiftpackage.domain.*
+import com.chromaticnoise.multiplatformswiftpackage.domain.Either
+import com.chromaticnoise.multiplatformswiftpackage.domain.PlatformVersion
 import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError
 import com.chromaticnoise.multiplatformswiftpackage.domain.PluginConfiguration.PluginConfigurationError.InvalidTargetName
-import org.gradle.api.Action
+import com.chromaticnoise.multiplatformswiftpackage.domain.TargetName
+import com.chromaticnoise.multiplatformswiftpackage.domain.TargetPlatform
+import groovy.lang.Closure
+import org.gradle.util.ConfigureUtil
 
 /**
 * DSL to create instances of [TargetPlatform].
@@ -16,8 +20,12 @@ public class TargetPlatformDsl {
      *
      * @param version builder for an instance of [PlatformVersion]
      */
-    public fun iOS(version: Action<PlatformVersionDsl>) {
-        targets(Either.Right(TargetName.IOSarm64), Either.Right(TargetName.IOSx64), version = version)
+    public fun iOS(version: PlatformVersionDsl.() -> Unit) {
+        targetsInternal(listOf(Either.Right(TargetName.IOSarm64), Either.Right(TargetName.IOSx64)), version)
+    }
+
+    public fun iOS(version: Closure<PlatformVersionDsl>) {
+        iOS { ConfigureUtil.configure(version, this) }
     }
 
     /**
@@ -25,14 +33,18 @@ public class TargetPlatformDsl {
      *
      * @param version builder for an instance of [PlatformVersion]
      */
-    public fun watchOS(version: Action<PlatformVersionDsl>) {
-        targets(
+    public fun watchOS(version: PlatformVersionDsl.() -> Unit) {
+        targetsInternal(listOf(
             Either.Right(TargetName.WatchOSarm32),
             Either.Right(TargetName.WatchOSarm64),
             Either.Right(TargetName.WatchOSx86),
-            Either.Right(TargetName.WatchOSx64),
-            version = version
+            Either.Right(TargetName.WatchOSx64)),
+            version
         )
+    }
+
+    public fun watchOS(version: Closure<PlatformVersionDsl>) {
+        watchOS { ConfigureUtil.configure(version, this) }
     }
 
     /**
@@ -40,8 +52,12 @@ public class TargetPlatformDsl {
      *
      * @param version builder for an instance of [PlatformVersion]
      */
-    public fun tvOS(version: Action<PlatformVersionDsl>) {
-        targets(Either.Right(TargetName.TvOSarm64), Either.Right(TargetName.TvOSx64), version = version)
+    public fun tvOS(version: PlatformVersionDsl.() -> Unit) {
+        targetsInternal(listOf(Either.Right(TargetName.TvOSarm64), Either.Right(TargetName.TvOSx64)), version)
+    }
+
+    public fun tvOS(version: Closure<PlatformVersionDsl>) {
+        tvOS { ConfigureUtil.configure(version, this) }
     }
 
     /**
@@ -49,8 +65,12 @@ public class TargetPlatformDsl {
      *
      * @param version builder for an instance of [PlatformVersion]
      */
-    public fun macOS(version: Action<PlatformVersionDsl>) {
-        targets(Either.Right(TargetName.MacOSx64), version = version)
+    public fun macOS(version: PlatformVersionDsl.() -> Unit) {
+        targetsInternal(listOf(Either.Right(TargetName.MacOSx64)), version)
+    }
+
+    public fun macOS(version: Closure<PlatformVersionDsl>) {
+        macOS { ConfigureUtil.configure(version, this) }
     }
 
     /**
@@ -60,26 +80,28 @@ public class TargetPlatformDsl {
      * @param names of the targets. E.g. iosArm64, iosX64
      * @param version builder for an instance of [PlatformVersion]
      */
-    public fun targets(vararg names: String, version: Action<PlatformVersionDsl>) {
-        val targetNames = names.map { Either.ofNullable(TargetName.of(it), InvalidTargetName(it)) }.toTypedArray()
-        targets(*targetNames, version = version)
+    public fun targets(vararg names: String, version: PlatformVersionDsl.() -> Unit) {
+        targetsInternal(names.asList().toTargetNames(), version)
     }
 
-    private fun targets(vararg names: Either<PluginConfigurationError, TargetName>, version: Action<PlatformVersionDsl>) {
+    public fun targets(names: Collection<String>, version: Closure<PlatformVersionDsl>) {
+        targetsInternal(names.toTargetNames()) { ConfigureUtil.configure(version, this) }
+    }
+
+    private fun targetsInternal(names: Collection<Either<PluginConfigurationError, TargetName>>, configure: PlatformVersionDsl.() -> Unit) {
         if (names.isEmpty()) return
+        val platformVersion = PlatformVersionDsl().apply(configure).version ?: return
 
-        version.build(PlatformVersionDsl()) { dsl ->
-            dsl.version?.let { platformVersion ->
-                val errors = names.filterIsInstance<Either.Left<PluginConfigurationError, TargetName>>().map { it.value }
-                val targetNames = names.filterIsInstance<Either.Right<PluginConfigurationError, TargetName>>().map { it.value }
-                val platform: Either<List<PluginConfigurationError>, TargetPlatform> = when {
-                    errors.isNotEmpty() -> Either.Left(errors)
-                    else -> Either.Right(TargetPlatform(version = platformVersion, targets = targetNames))
-                }
-                targetPlatforms.add(platform)
-            }
+        val errors = names.filterIsInstance<Either.Left<PluginConfigurationError, TargetName>>().map { it.value }
+        val targetNames = names.filterIsInstance<Either.Right<PluginConfigurationError, TargetName>>().map { it.value }
+        val platform: Either<List<PluginConfigurationError>, TargetPlatform> = when {
+            errors.isNotEmpty() -> Either.Left(errors)
+            else -> Either.Right(TargetPlatform(version = platformVersion, targets = targetNames))
         }
+        targetPlatforms.add(platform)
     }
+
+    private fun Collection<String>.toTargetNames() = map { Either.ofNullable(TargetName.of(it), InvalidTargetName(it)) }
 
     /**
      * DSL to create instances of [PlatformVersion].

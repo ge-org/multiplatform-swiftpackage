@@ -7,6 +7,7 @@ import com.chromaticnoise.multiplatformswiftpackage.task.registerCreateXCFramewo
 import com.chromaticnoise.multiplatformswiftpackage.task.registerCreateZipFileTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
@@ -16,7 +17,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 public class MultiplatformSwiftPackagePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val extension = project.extensions.create(EXTENSION_NAME, SwiftPackageExtension::class.java, project)
+        val extension = project.extensions.create<SwiftPackageExtension>(EXTENSION_NAME, project)
+
         project.afterEvaluate {
             project.extensions.findByType<KotlinMultiplatformExtension>()?.let { kmpExtension ->
                 extension.appleTargets = AppleTarget.allOf(

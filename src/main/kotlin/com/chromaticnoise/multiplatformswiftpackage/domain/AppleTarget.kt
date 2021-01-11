@@ -2,9 +2,7 @@ package com.chromaticnoise.multiplatformswiftpackage.domain
 
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeOutputKind
-import java.io.File
 
 internal class AppleTarget private constructor(val nativeTarget: KotlinNativeTarget) {
 

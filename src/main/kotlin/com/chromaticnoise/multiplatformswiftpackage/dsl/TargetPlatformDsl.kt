@@ -10,8 +10,8 @@ import groovy.lang.Closure
 import org.gradle.util.ConfigureUtil
 
 /**
-* DSL to create instances of [TargetPlatform].
-*/
+ * DSL to create instances of [TargetPlatform].
+ */
 public class TargetPlatformDsl {
     internal var targetPlatforms = mutableListOf<Either<List<PluginConfigurationError>, TargetPlatform>>()
 
@@ -21,7 +21,14 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun iOS(version: PlatformVersionDsl.() -> Unit) {
-        targetsInternal(listOf(Either.Right(TargetName.IOSarm64), Either.Right(TargetName.IOSx64)), version)
+        targetsInternal(
+            listOf(
+                Either.Right(TargetName.IOSarm64),
+                Either.Right(TargetName.IOSx64),
+                Either.Right(TargetName.IOSSimulatorArm64)
+            ),
+            version
+        )
     }
 
     public fun iOS(version: Closure<PlatformVersionDsl>) {
@@ -34,11 +41,14 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun watchOS(version: PlatformVersionDsl.() -> Unit) {
-        targetsInternal(listOf(
-            Either.Right(TargetName.WatchOSarm32),
-            Either.Right(TargetName.WatchOSarm64),
-            Either.Right(TargetName.WatchOSx86),
-            Either.Right(TargetName.WatchOSx64)),
+        targetsInternal(
+            listOf(
+                Either.Right(TargetName.WatchOSarm32),
+                Either.Right(TargetName.WatchOSarm64),
+                Either.Right(TargetName.WatchOSx86),
+                Either.Right(TargetName.WatchOSx64),
+                Either.Right(TargetName.WatchOSSimulatorArm64)
+            ),
             version
         )
     }
@@ -53,7 +63,14 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun tvOS(version: PlatformVersionDsl.() -> Unit) {
-        targetsInternal(listOf(Either.Right(TargetName.TvOSarm64), Either.Right(TargetName.TvOSx64)), version)
+        targetsInternal(
+            listOf(
+                Either.Right(TargetName.TvOSarm64),
+                Either.Right(TargetName.TvOSx64),
+                Either.Right(TargetName.TvOSSimulatorArm64)
+            ),
+            version
+        )
     }
 
     public fun tvOS(version: Closure<PlatformVersionDsl>) {
@@ -66,7 +83,13 @@ public class TargetPlatformDsl {
      * @param version builder for an instance of [PlatformVersion]
      */
     public fun macOS(version: PlatformVersionDsl.() -> Unit) {
-        targetsInternal(listOf(Either.Right(TargetName.MacOSx64)), version)
+        targetsInternal(
+            listOf(
+                Either.Right(TargetName.MacOSx64),
+                Either.Right(TargetName.MacOSArm64)
+            ),
+            version
+        )
     }
 
     public fun macOS(version: Closure<PlatformVersionDsl>) {

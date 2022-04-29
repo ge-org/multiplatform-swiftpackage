@@ -1,12 +1,14 @@
 package com.chromaticnoise.multiplatformswiftpackage.domain
 
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import java.io.File
 
 internal class AppleFramework(
     val outputFile: AppleFrameworkOutputFile,
     val name: AppleFrameworkName,
-    val linkTask: AppleFrameworkLinkTask
+    val linkTask: AppleFrameworkLinkTask,
+    val framework: Framework? = null
 ) {
 
     val dsymFile: File get() = File(outputFile.parent, "${name.value}.framework.dSYM")
@@ -18,7 +20,8 @@ internal fun AppleFramework.Companion.of(binary: NativeBinary?): AppleFramework?
     AppleFramework(
         AppleFrameworkOutputFile(it.outputFile),
         AppleFrameworkName(it.baseName),
-        AppleFrameworkLinkTask(it.linkTaskName)
+        AppleFrameworkLinkTask(it.linkTaskName),
+        binary as Framework
     )
 }
 

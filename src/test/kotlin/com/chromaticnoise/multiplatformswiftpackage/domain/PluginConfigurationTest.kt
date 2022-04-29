@@ -95,7 +95,7 @@ class PluginConfigurationTest : BehaviorSpec() {
 
     private lateinit var project: Project
 
-    override fun beforeTest(testCase: TestCase) {
+    override suspend fun beforeTest(testCase: TestCase)  {
         project = mockk(relaxed = true) {
             every { projectDir } returns File("")
         }

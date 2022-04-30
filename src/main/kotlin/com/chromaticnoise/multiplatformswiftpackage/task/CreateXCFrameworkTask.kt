@@ -110,6 +110,7 @@ internal fun Project.registerCreateUniversalIosSimulatorFrameworkTask() =
         dependsOn(targets.map { it.linkTask.name })
         if (targets.isNotEmpty()) {
             val buildType = if (targets[0].linkTask.name.contains("Release")) "release" else "debug"
+            baseName = configuration.packageName.value
             destinationDir = buildDir.resolve("bin/iosSimulatorUniversal/${buildType}Framework")
             from(targets.mapNotNull { it.framework })
         }
@@ -125,6 +126,7 @@ internal fun Project.registerCreateUniversalWatchosSimulatorFrameworkTask() =
         dependsOn(targets.map { it.linkTask.name })
         if (targets.isNotEmpty()) {
             val buildType = if (targets[0].linkTask.name.contains("Release")) "release" else "debug"
+            baseName = configuration.packageName.value
             destinationDir = buildDir.resolve("bin/watchosSimulatorUniversal/$buildType")
             from(targets.mapNotNull { it.framework })
         }
@@ -140,6 +142,7 @@ internal fun Project.registerCreateUniversalTvosSimulatorFrameworkTask() =
         dependsOn(targets.map { it.linkTask.name })
         if (targets.isNotEmpty()) {
             val buildType = if (targets[0].linkTask.name.contains("Release")) "release" else "debug"
+            baseName = configuration.packageName.value
             destinationDir = buildDir.resolve("bin/tvosSimulatorUniversal/$buildType")
             from(targets.mapNotNull { it.framework })
         }

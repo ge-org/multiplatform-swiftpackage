@@ -43,6 +43,11 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+project.tasks.named("processResources", Copy::class.java) {
+    // https://github.com/gradle/gradle/issues/17236
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 extensions.findByName("buildScan")?.withGroovyBuilder {
     setProperty("termsOfServiceUrl", "https://gradle.com/terms-of-service")
     setProperty("termsOfServiceAgree", "yes")

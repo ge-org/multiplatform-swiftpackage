@@ -1,6 +1,7 @@
 package com.chromaticnoise.multiplatformswiftpackage.domain
 
 internal enum class TargetName(val identifier: String) {
+    IOSsimulatorArm64("iosSimulatorArm64"),
     IOSarm64("iosArm64"),
     IOSx64("iosX64"),
     WatchOSarm32("watchosArm32"),

@@ -2,7 +2,9 @@ package com.chromaticnoise.multiplatformswiftpackage
 
 import com.chromaticnoise.multiplatformswiftpackage.domain.AppleTarget
 import com.chromaticnoise.multiplatformswiftpackage.domain.platforms
+import com.chromaticnoise.multiplatformswiftpackage.task.*
 import com.chromaticnoise.multiplatformswiftpackage.task.registerCreateSwiftPackageTask
+import com.chromaticnoise.multiplatformswiftpackage.task.registerCreateUniversalIosSimulatorFrameworkTask
 import com.chromaticnoise.multiplatformswiftpackage.task.registerCreateXCFrameworkTask
 import com.chromaticnoise.multiplatformswiftpackage.task.registerCreateZipFileTask
 import org.gradle.api.Plugin
@@ -25,6 +27,10 @@ public class MultiplatformSwiftPackagePlugin : Plugin<Project> {
                     nativeTargets = kmpExtension.targets.toList(),
                     platforms = extension.targetPlatforms.platforms
                 )
+                project.registerCreateUniversalMacosFrameworkTask()
+                project.registerCreateUniversalIosSimulatorFrameworkTask()
+                project.registerCreateUniversalWatchosSimulatorFrameworkTask()
+                project.registerCreateUniversalTvosSimulatorFrameworkTask()
                 project.registerCreateXCFrameworkTask()
                 project.registerCreateZipFileTask()
                 project.registerCreateSwiftPackageTask()

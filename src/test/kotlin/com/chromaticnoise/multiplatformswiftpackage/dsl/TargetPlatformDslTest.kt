@@ -25,6 +25,11 @@ class TargetPlatformDslTest : StringSpec() {
                 .shouldHaveTarget("iosX64")
         }
 
+        "adding ios targets should add arm 64 simulator target" {
+            TargetPlatformDsl().apply { iOS(someVersion) }.targetPlatforms
+                .shouldHaveTarget("iosSimulatorArm64")
+        }
+
         "adding watchOS targets should add arm 32 target" {
             TargetPlatformDsl().apply { watchOS(someVersion) }.targetPlatforms
                 .shouldHaveTarget("watchosArm32")
@@ -40,6 +45,11 @@ class TargetPlatformDslTest : StringSpec() {
                 .shouldHaveTarget("watchosX86")
         }
 
+        "adding watchOS targets should add arm 64 simulator target" {
+            TargetPlatformDsl().apply { watchOS(someVersion) }.targetPlatforms
+                .shouldHaveTarget("watchosSimulatorArm64")
+        }
+
         "adding tvOS targets should add arm 64 target" {
             TargetPlatformDsl().apply { tvOS(someVersion) }.targetPlatforms
                 .shouldHaveTarget("tvosArm64")
@@ -50,9 +60,19 @@ class TargetPlatformDslTest : StringSpec() {
                 .shouldHaveTarget("tvosX64")
         }
 
+        "adding tvOS targets should add arm 64 simulator target" {
+            TargetPlatformDsl().apply { tvOS(someVersion) }.targetPlatforms
+                .shouldHaveTarget("tvosSimulatorArm64")
+        }
+
         "adding macOS targets should add x64 target" {
             TargetPlatformDsl().apply { macOS(someVersion) }.targetPlatforms
                 .shouldHaveTarget("macosX64")
+        }
+
+        "adding macOS targets should add arm 64 target" {
+            TargetPlatformDsl().apply { macOS(someVersion) }.targetPlatforms
+                .shouldHaveTarget("macosArm64")
         }
 
         "adding target without names should not add a platform target" {

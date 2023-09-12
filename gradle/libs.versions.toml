@@ -1,0 +1,17 @@
+[metadata]
+format.version = "1.1"
+
+[versions]
+kotlin-language = "1.9.10"
+binary-compatibility-validator = "0.2.4"
+kotest = "4.3.0"
+mockk = "1.10.0"
+
+[libraries]
+kotest-runner = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotest-property = { group = "io.kotest", name = "kotest-property", version.ref = "kotest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+[plugins]
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx:binary-compatibility-validator", version.ref = "binary-compatibility-validator" }

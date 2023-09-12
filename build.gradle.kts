@@ -1,35 +1,25 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        classpath("org.jetbrains.kotlinx:binary-compatibility-validator:0.2.4")
-    }
-}
+@Suppress("DSL_SCOPE_VIOLATION")
 
-apply(plugin = "binary-compatibility-validator")
+repositories {
+    google()
+    mavenCentral()
+}
 
 plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
     `maven-publish`
     signing
+    libs.plugins.binary
 }
 
 version = "2.0.3"
 
-repositories {
-    jcenter()
-}
-
 dependencies {
-    compileOnly(kotlin("gradle-plugin"))
-    testImplementation("io.kotest:kotest-runner-junit5:4.3.0")
-    testImplementation("io.kotest:kotest-assertions-core:4.3.0")
-    testImplementation("io.kotest:kotest-property:4.3.0")
-    testImplementation("io.mockk:mockk:1.10.0")
-    testImplementation(kotlin("gradle-plugin"))
+    testImplementation(libs.kotest.runner)
+    testImplementation(libs.kotest.assertions)
+    testImplementation(libs.kotest.property)
+    testImplementation(libs.mockk)
 }
 
 java {
@@ -53,7 +43,8 @@ gradlePlugin {
     plugins {
         create("pluginMaven") {
             id = "com.chromaticnoise.multiplatform-swiftpackage"
-            implementationClass = "com.chromaticnoise.multiplatformswiftpackage.MultiplatformSwiftPackagePlugin"
+            implementationClass =
+                "com.chromaticnoise.multiplatformswiftpackage.MultiplatformSwiftPackagePlugin"
         }
     }
 }
